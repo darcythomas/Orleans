@@ -1,7 +1,0 @@
-C:\dd\Orleans\Code\bin\Debug\ClientConfiguration.xml
-C:\dd\Orleans\Code\bin\Debug\Hello2012ConsoleApp.exe.config
-C:\dd\Orleans\Code\bin\Debug\Hello2012ConsoleApp.exe
-C:\dd\Orleans\Code\bin\Debug\Hello2012ConsoleApp.pdb
-C:\dd\Orleans\Code\Main\Samples\Hello2012\Hello2012ConsoleApp\obj\Debug\Hello2012ConsoleApp.exe
-C:\dd\Orleans\Code\Main\Samples\Hello2012\Hello2012ConsoleApp\obj\Debug\Hello2012ConsoleApp.pdb
-C:\dd\Orleans\Code\Main\Samples\Hello2012\Hello2012ConsoleApp\obj\Debug\Hello2012ConsoleApp.csprojResolveAssemblyReference.cache

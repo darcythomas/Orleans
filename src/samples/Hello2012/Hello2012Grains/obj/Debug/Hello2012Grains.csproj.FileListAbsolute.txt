@@ -1,5 +1,0 @@
-C:\dd\Orleans\Code\bin\Debug\Hello2012Grains.dll
-C:\dd\Orleans\Code\bin\Debug\Hello2012Grains.pdb
-C:\dd\Orleans\Code\Main\Samples\Hello2012\Hello2012Grains\obj\Debug\Hello2012Grains.csprojResolveAssemblyReference.cache
-C:\dd\Orleans\Code\Main\Samples\Hello2012\Hello2012Grains\obj\Debug\Hello2012Grains.dll
-C:\dd\Orleans\Code\Main\Samples\Hello2012\Hello2012Grains\obj\Debug\Hello2012Grains.pdb

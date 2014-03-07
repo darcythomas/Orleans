@@ -1,5 +1,0 @@
-C:\dd\Orleans\Code\bin\Debug\Hello2012GrainInterfaces.dll
-C:\dd\Orleans\Code\bin\Debug\Hello2012GrainInterfaces.pdb
-C:\dd\Orleans\Code\Main\Samples\Hello2012\Hello2012GrainInterfaces\obj\Debug\Hello2012GrainInterfaces.csprojResolveAssemblyReference.cache
-C:\dd\Orleans\Code\Main\Samples\Hello2012\Hello2012GrainInterfaces\obj\Debug\Hello2012GrainInterfaces.dll
-C:\dd\Orleans\Code\Main\Samples\Hello2012\Hello2012GrainInterfaces\obj\Debug\Hello2012GrainInterfaces.pdb
