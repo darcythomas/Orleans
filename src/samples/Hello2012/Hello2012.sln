@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hello2012GrainInterfaces", "Hello2012GrainInterfaces\Hello2012GrainInterfaces.csproj", "{0721553D-2CA8-462E-81D6-976668707072}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hello2012Grains", "Hello2012Grains\Hello2012Grains.csproj", "{89D901DE-35DF-4905-AD09-C07E4B2BDC2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hello2012ConsoleApp", "Hello2012ConsoleApp\Hello2012ConsoleApp.csproj", "{ED10319D-D7C4-4D85-A289-A65EA0F5B1A5}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vstfpg03:8080/tfs/pg03
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Hello2012ConsoleApp\\Hello2012ConsoleApp.csproj
+		SccProjectName1 = Hello2012ConsoleApp
+		SccLocalPath1 = Hello2012ConsoleApp
+		SccProjectUniqueName2 = Hello2012GrainInterfaces\\Hello2012GrainInterfaces.csproj
+		SccProjectName2 = Hello2012GrainInterfaces
+		SccLocalPath2 = Hello2012GrainInterfaces
+		SccProjectUniqueName3 = Hello2012Grains\\Hello2012Grains.csproj
+		SccProjectName3 = Hello2012Grains
+		SccLocalPath3 = Hello2012Grains
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0721553D-2CA8-462E-81D6-976668707072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0721553D-2CA8-462E-81D6-976668707072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0721553D-2CA8-462E-81D6-976668707072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0721553D-2CA8-462E-81D6-976668707072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89D901DE-35DF-4905-AD09-C07E4B2BDC2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89D901DE-35DF-4905-AD09-C07E4B2BDC2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89D901DE-35DF-4905-AD09-C07E4B2BDC2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89D901DE-35DF-4905-AD09-C07E4B2BDC2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED10319D-D7C4-4D85-A289-A65EA0F5B1A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED10319D-D7C4-4D85-A289-A65EA0F5B1A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED10319D-D7C4-4D85-A289-A65EA0F5B1A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED10319D-D7C4-4D85-A289-A65EA0F5B1A5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
