@@ -36,6 +36,8 @@
 *.manifest
 *.rc
 *~
+*.codegen.cs
+packages/
 ipch/
 obj/
 *.resfiles
