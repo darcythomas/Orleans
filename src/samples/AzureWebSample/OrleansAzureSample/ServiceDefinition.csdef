@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition name="OrleansAzureSample" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2013-10.2.2">
-  <WorkerRole name="OrleansAzureSilos" vmsize="Medium">
+  <WorkerRole name="OrleansAzureSilos" vmsize="ExtraSmall">
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
@@ -18,7 +18,7 @@
       <Task commandLine="CounterControl.exe" executionContext="elevated" taskType="simple" />
     </Startup>
   </WorkerRole>
-  <WebRole name="WebRole" vmsize="Medium">
+  <WebRole name="WebRole" vmsize="ExtraSmall">
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
