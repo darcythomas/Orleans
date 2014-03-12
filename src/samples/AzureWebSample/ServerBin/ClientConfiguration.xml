@@ -4,9 +4,6 @@
 	For a detailed reference, see "Orleans Configuration Reference.html".
 -->
 <ClientConfiguration xmlns="urn:orleans">
-  <!--<GatewayProvider ProviderType="WindowsFabric"/>
-  <WindowsFabric WindowsFabricServiceName="fabric:/OrleansSilo/svc1" /> 
-  <Gateway Address="localhost" Port="19000"/>-->
   <GatewayProvider ProviderType="Config"/>
   <Gateway Address="localhost" Port="30000"/>
   <Statistics MetricsTableWriteInterval="30s" PerfCounterWriteInterval="30s" LogWriteInterval="300s" WriteLogStatisticsToTable="true"/>
