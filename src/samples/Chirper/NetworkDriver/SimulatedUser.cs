@@ -46,7 +46,7 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
 
         public void Stop()
         {
-            ConsoleText.WriteStatus("Stopping simulating Chirper user id=" + userId);
+            Console.WriteLine("Stopping simulating Chirper user id=" + userId);
         }
 
         #region IDisposable interface

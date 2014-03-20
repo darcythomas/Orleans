@@ -73,17 +73,17 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
             loader = new ChirperNetworkLoader(pipeline);
             //if (this.Verbose) loader.SetVerbose();
 
-            ConsoleText.WriteStatus("Loading Chirper network data file " + this.GraphDataFile.FullName);
+            Console.WriteLine("Loading Chirper network data file " + this.GraphDataFile.FullName);
             loader.FileToLoad = this.GraphDataFile;
             loader.LoadData();
             loader.CreateUserNodes(); // Connect/create users
 
-            ConsoleText.WriteStatus(string.Format(
+            Console.WriteLine(
                 "Starting Chirper network traffic simulation for {0} users.\n"
                 + "Chirp publication time base = {1}\n"
                 + "Random time distribution = {2}\n"
                 + "Rechirp rate = {3}", 
-                loader.Users.Count, this.ChirpPublishTimebase, this.ChirpPublishTimeRandom, this.ShouldRechirpRate));
+                loader.Users.Count, this.ChirpPublishTimebase, this.ChirpPublishTimeRandom, this.ShouldRechirpRate);
 
             ForEachUser(user =>
             {
@@ -110,7 +110,7 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
                 SimulatedUser u = activeUsers[i];
                 if (u == null)
                 {
-                    ConsoleText.WriteError(String.Format("User {0} not found.", i));
+                    Console.WriteLine("User {0} not found.", i);
                     return -1;
                 }
 
@@ -186,14 +186,14 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
 
                     if (!GraphDataFile.Exists)
                     {
-                        ConsoleText.WriteError("Cannot find data file: " + this.GraphDataFile.FullName);
+                        Console.WriteLine("Cannot find data file: " + this.GraphDataFile.FullName);
                         ok = false;
                     }
                 }
                 else
                 {
                     // Too many command line arguments
-                    ConsoleText.WriteError("Too many command line arguments supplied: " + a);
+                    Console.WriteLine("Too many command line arguments supplied: " + a);
                     return false;
                 }
             }
@@ -215,7 +215,7 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
                 usageStr.WriteLine(" /create      = Create the network graph in Orleans before running simulation");
                 usageStr.WriteLine(" /v           = Verbose output");
 
-                ConsoleText.WriteUsage(usageStr.ToString());
+                Console.WriteLine(usageStr.ToString());
             }
         }
 

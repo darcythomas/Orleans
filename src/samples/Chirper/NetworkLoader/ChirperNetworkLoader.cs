@@ -193,7 +193,7 @@ namespace Orleans.Samples.Chirper2012.Network.Loader
                 usageStr.WriteLine(" {file}            = GraphML file to load");
                 usageStr.WriteLine(" /pipeline {n}     = Request pipeline size [default " + DefaultPipelineSize + "]");
 
-                ConsoleText.WriteUsage(usageStr.ToString());
+                Console.WriteLine(usageStr.ToString());
             }
         }
 
@@ -318,7 +318,7 @@ namespace Orleans.Samples.Chirper2012.Network.Loader
             Interlocked.Increment(ref numErrors);
 
             msg = string.Format("Error Time: {0:G}\n\t{1}", Logger.PrintDate(DateTime.UtcNow), msg);
-            ConsoleText.WriteError(msg);
+            Console.WriteLine(msg);
         }
         #endregion
     }

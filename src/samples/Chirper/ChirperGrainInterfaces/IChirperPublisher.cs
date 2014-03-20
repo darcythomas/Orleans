@@ -35,7 +35,6 @@ namespace Orleans.Samples.Chirper2012.GrainInterfaces
         /// <param name="start">The start position for returned messages. A value of 0 means start with most recent message. A positive value means skip past that many of the most recent messages</param>
         /// <returns>Bulk list of Chirp messages posted by this publisher</returns>
         /// <remarks>The publisher might only return a partial record of historic events due to message retention policies.</remarks>
-        [Orleans.ReadOnly]
         Task<List<ChirperMessage>> GetPublishedMessages(int n = 10, int start = 0);
 
         /// <summary>Subscribe from receiving notifications of new Chirps sent by this publisher</summary>

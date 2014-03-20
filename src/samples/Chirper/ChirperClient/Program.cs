@@ -51,7 +51,7 @@ namespace Orleans.Samples.Chirper2012.Client
                     run.Wait();
                     if (run.IsFaulted)
                     {
-                        ConsoleText.WriteError("Error running client program: " + run.Exception);
+                        Console.WriteLine("Error running client program: " + run.Exception);
                     }
                     else
                     {
@@ -60,7 +60,7 @@ namespace Orleans.Samples.Chirper2012.Client
                 }
                 catch (Exception exc)
                 {
-                    ConsoleText.WriteError("Error running client program: " + exc);
+                    Console.WriteLine("Error running client program: " + exc);
                 }
             }
             else

@@ -37,7 +37,7 @@ namespace Orleans.Samples.Chirper2012.Client
         {
             if (UserId == 0) throw new ArgumentNullException("UserId", "No user UserId provided");
 
-            ConsoleText.WriteStatus(string.Format("ChirperClient UserId={0}", UserId));
+            Console.WriteLine("ChirperClient UserId={0}", UserId);
             bool ok = true;
 
             try 
@@ -64,7 +64,7 @@ namespace Orleans.Samples.Chirper2012.Client
                 {
                     // ... and then subscribe to receive any new chirps
                     viewer = await ChirperViewerFactory.CreateObjectReference(this);
-                    ConsoleText.WriteStatus("Listening for new chirps...");
+                    Console.WriteLine("Listening for new chirps...");
                     await account.ViewerConnect(viewer);
                     // Ctrl-C to exit
                     Thread.Sleep(-1);
@@ -72,7 +72,7 @@ namespace Orleans.Samples.Chirper2012.Client
             }
             catch (Exception exc)
             {
-                ConsoleText.WriteError("Error connecting Chirper client for user=" + UserId, exc);
+                Console.WriteLine("Error connecting Chirper client for user={0}. Exception:{1}", UserId, exc);
                 ok = false;
             }
 
@@ -151,7 +151,7 @@ namespace Orleans.Samples.Chirper2012.Client
                 }
                 else
                 {
-                    ConsoleText.WriteError("Unknown command line argument: " + a);
+                    Console.WriteLine("ERROR: Unknown command line argument: " + a);
                     ok = false;
                 }
 
@@ -162,7 +162,7 @@ namespace Orleans.Samples.Chirper2012.Client
 
         public void PrintUsage()
         {
-            ConsoleText.WriteUsage(Assembly.GetExecutingAssembly().GetName().Name + ".exe [/snapshot] <user ID> ");
+            Console.WriteLine(Assembly.GetExecutingAssembly().GetName().Name + ".exe [/snapshot] <user ID> ");
         }
     }
 }

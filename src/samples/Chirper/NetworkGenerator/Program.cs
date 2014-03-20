@@ -34,7 +34,7 @@ namespace Orleans.Samples.Chirper2012.Network.Generator
             string progTitle = string.Format("{0} v{1}",
                 thisProg.Name,
                 thisProg.Version);
-            ConsoleText.WriteStatus(progTitle);
+            Console.WriteLine(progTitle);
             Console.Title = progTitle;
 
             int exitCode;
@@ -54,7 +54,7 @@ namespace Orleans.Samples.Chirper2012.Network.Generator
             {
                 prog.LogMessage(string.Format("{0} halting due to error - {1}", thisProg.Name, exc));
                 prog.FlushLog();
-               // ConsoleText.WriteError(string.Format("{0} halting due to error - {1}", thisProg.Name, exc.ToString()));
+               // Console.WriteLine(string.Format("{0} halting due to error - {1}", thisProg.Name, exc.ToString()));
                 exitCode = 1;
             }
 

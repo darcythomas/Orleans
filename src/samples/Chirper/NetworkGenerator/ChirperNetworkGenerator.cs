@@ -138,7 +138,7 @@ namespace Orleans.Samples.Chirper2012.Network.Generator
                 else
                 {
                     // Too many command line arguments
-                    ConsoleText.WriteError("Too many command line arguments supplied: " + a);
+                    Console.WriteLine("Too many command line arguments supplied: " + a);
                     return false;
                 }
             }
@@ -163,7 +163,7 @@ namespace Orleans.Samples.Chirper2012.Network.Generator
                 usageStr.WriteLine(" /auto             = Will suppress the prompt to exit.");
                 usageStr.WriteLine(" /random           = Causes edges to be generated randomly.");
 
-                ConsoleText.WriteUsage(usageStr.ToString());
+                Console.WriteLine(usageStr.ToString());
             }
         }
 

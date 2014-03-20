@@ -55,12 +55,10 @@ namespace Orleans.Samples.Chirper2012.GrainInterfaces
 
         /// <summary>Get the list of publishers who this user is following</summary>
         /// <returns>List of users being followed</returns>
-        [Orleans.ReadOnly]
         Task<List<ChirperUserInfo>> GetFollowingList();
 
         /// <summary>Get the list of subscribers who are following this user</summary>
         /// <returns>List of users who are following this user</returns>
-        [Orleans.ReadOnly]
         Task<List<ChirperUserInfo>> GetFollowersList();
 
         /// <summary>Publish a new Chirp message</summary>
@@ -73,7 +71,6 @@ namespace Orleans.Samples.Chirper2012.GrainInterfaces
         /// <param name="start">The start position for returned messages. A value of 0 means start with most recent message. A positive value means skip past that many of the most recent messages</param>
         /// <returns>List of Chirp messages received by this subscriber</returns>
         /// <remarks>The subscriber might only return a partial record of historic events due to message retention policies.</remarks>
-        [Orleans.ReadOnly]
         Task<List<ChirperMessage>> GetReceivedMessages(int n = 10, int start = 0);
 
         /// <summary>Subscribe a viewer app to receive notifications of new Chirps received by this user</summary>

@@ -37,7 +37,7 @@ namespace Orleans.Samples.Chirper2012.Network.Loader
             string progTitle = string.Format("{0} v{1}",
                 thisProg.Name,
                 thisProg.Version);
-            ConsoleText.WriteStatus(progTitle);
+            Console.WriteLine(progTitle);
             Console.Title = progTitle;
 
             try
@@ -56,13 +56,13 @@ namespace Orleans.Samples.Chirper2012.Network.Loader
 
                     if (run.IsFaulted)
                     {
-                        ConsoleText.WriteError("Error running client program: " + run.Exception);
+                        Console.WriteLine("Error running client program: " + run.Exception);
                         prog.DumpStatus();
                         exitCode = 1;
                     }
                     else if (!ok)
                     {
-                        ConsoleText.WriteError("Timeout running client program");
+                        Console.WriteLine("Timeout running client program");
                         prog.DumpStatus();
                         exitCode = 2;
                     }

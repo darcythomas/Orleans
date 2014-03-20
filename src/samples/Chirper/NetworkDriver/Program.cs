@@ -34,7 +34,7 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
                 string progTitle = string.Format("{0} v{1}",
                     thisProg.Name,
                     thisProg.Version);
-                ConsoleText.WriteStatus(progTitle);
+                Console.WriteLine(progTitle);
                 Console.Title = progTitle;
 
 
@@ -52,7 +52,7 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
                 }
                 catch (Exception exc)
                 {
-                    ConsoleText.WriteError(string.Format("{0} halting due to error - {1}", thisProg.Name, exc.Message), exc);
+                    Console.WriteLine("{0} halting due to error - {1}. Exception:{2}", thisProg.Name, exc.Message, exc);
                     exitCode = 1;
                 }
 
@@ -65,7 +65,7 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
                 }
                 catch (Exception exc)
                 {
-                    ConsoleText.WriteError("Ignoring shutdown error: " + exc);
+                    Console.WriteLine("Ignoring shutdown error: " + exc);
                 }
             }
             finally
