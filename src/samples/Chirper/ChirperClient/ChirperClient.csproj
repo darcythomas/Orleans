@@ -43,9 +43,6 @@
     <Reference Include="Orleans">
       <HintPath>$(OrleansSDK)\Binaries\OrleansClient\Orleans.dll</HintPath>
     </Reference>
-    <Reference Include="OrleansRuntimeGrainInterfaces">
-      <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntimeGrainInterfaces.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
