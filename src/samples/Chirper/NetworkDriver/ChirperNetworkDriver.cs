@@ -31,7 +31,7 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
     {
         private AsyncPipeline pipeline;
         private readonly List<SimulatedUser> activeUsers;
-        
+
         public FileInfo GraphDataFile { get; internal set; }
 
         public double LoggedInUserRate { get; set; }
@@ -54,8 +54,9 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
             this.ChirpPublishTimebase = 0;
             this.ChirpPublishTimeRandom = true;
             this.activeUsers = new List<SimulatedUser>();
+            this.PipelineLength = 500;
             this.fortune = new Fortune("fortune.txt");
-            
+
             if (!OrleansClient.IsInitialized)
             {
                 OrleansClient.Initialize();
@@ -82,7 +83,7 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
                 "Starting Chirper network traffic simulation for {0} users.\n"
                 + "Chirp publication time base = {1}\n"
                 + "Random time distribution = {2}\n"
-                + "Rechirp rate = {3}", 
+                + "Rechirp rate = {3}",
                 loader.Users.Count, this.ChirpPublishTimebase, this.ChirpPublishTimeRandom, this.ShouldRechirpRate);
 
             ForEachUser(user =>
@@ -196,6 +197,11 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
                     Console.WriteLine("Too many command line arguments supplied: " + a);
                     return false;
                 }
+            }
+            if (GraphDataFile == null)
+            {
+                Console.WriteLine("No graph data file supplied -- driver cannot run.");
+                return false;
             }
 
             return ok;

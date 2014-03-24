@@ -96,6 +96,10 @@
     <None Include="..\Chirper.snk">
       <Link>Chirper.snk</Link>
     </None>
+    <None Include="..\NetworkLoader\GraphData\Network-1000nodes-27000edges.graphml">
+      <Link>GraphData\Network-1000nodes-27000edges.graphml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -23,25 +23,17 @@ namespace Orleans.Samples.Chirper2012.GrainInterfaces
     /// Data object representing key metadata for one Chirper user
     /// </summary>
     [Serializable]
-    public class ChirperUserInfo : IEquatable<ChirperUserInfo>
+    public struct ChirperUserInfo : IEquatable<ChirperUserInfo>
     {
-        private static readonly Interner<string, ChirperUserInfo> Interner = new Interner<string, ChirperUserInfo>();
-
         /// <summary>Unique Id for this user</summary>
-        public long UserId { get; private set;  }
+        public long UserId { get; private set; }
 
         /// <summary>Alias / username for this user</summary>
         public string UserAlias { get; private set; }
 
-        private ChirperUserInfo()
-        {
-        }
-
         public static ChirperUserInfo GetUserInfo(long userId, string userAlias)
         {
-            string key = userId + "|" + userAlias;
-            return Interner.FindOrCreate(key, 
-                () => new ChirperUserInfo { UserId = userId, UserAlias = userAlias } );
+            return new ChirperUserInfo { UserId = userId, UserAlias = userAlias };
         }
 
         public override string ToString()
@@ -51,13 +43,12 @@ namespace Orleans.Samples.Chirper2012.GrainInterfaces
 
         public bool Equals(ChirperUserInfo other)
         {
-            return other != null && this.UserId == other.UserId;
+            return this.UserId == other.UserId;
         }
 
         public override bool Equals(object obj)
         {
-            var other = obj as ChirperUserInfo;
-            return other != null && Equals(other);
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()
