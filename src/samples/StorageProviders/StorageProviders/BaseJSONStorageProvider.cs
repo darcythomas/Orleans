@@ -86,10 +86,10 @@ namespace Samples.StorageProviders
         /// <param name="grainId">Represents the long-lived identity of the grain.</param>
         /// <param name="grainState">A reference to an object to hold the persisted state of the grain.</param>
         /// <returns></returns>
-        public async Task ReadStateAsync(string grainType, GrainId grainId, IGrainState grainState)
+        public async Task ReadStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
         {
             if (DataManager == null) throw new ArgumentException("DataManager property not initialized");
-            var entityData = await DataManager.Read(grainState.GetType().Name, grainId.ToKeyString());
+            var entityData = await DataManager.Read(grainState.GetType().Name, grainReference.ToKeyString());
             if (entityData != null)
             {
                 ConvertFromStorageFormat(grainState, entityData);
@@ -103,11 +103,11 @@ namespace Samples.StorageProviders
         /// <param name="grainId">Represents the long-lived identity of the grain.</param>
         /// <param name="grainState">A reference to an object holding the persisted state of the grain.</param>
         /// <returns></returns>
-        public Task WriteStateAsync(string grainType, GrainId grainId, IGrainState grainState)
+        public Task WriteStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
         {
             if (DataManager == null) throw new ArgumentException("DataManager property not initialized");
             var entityData = ConvertToStorageFormat(grainState);
-            return DataManager.Write(grainState.GetType().Name, grainId.ToKeyString(), entityData);
+            return DataManager.Write(grainState.GetType().Name, grainReference.ToKeyString(), entityData);
         }
 
         /// <summary>
@@ -117,10 +117,10 @@ namespace Samples.StorageProviders
         /// <param name="grainId">Represents the long-lived identity of the grain.</param>
         /// <param name="grainState">An object holding the persisted state of the grain.</param>
         /// <returns></returns>
-        public Task ClearStateAsync(string grainType, GrainId grainId, GrainState grainState)
+        public Task ClearStateAsync(string grainType, GrainReference grainReference, GrainState grainState)
         {
             if (DataManager == null) throw new ArgumentException("DataManager property not initialized");
-            DataManager.Delete(grainState.GetType().Name, grainId.ToKeyString());
+            DataManager.Delete(grainState.GetType().Name, grainReference.ToKeyString());
             return TaskDone.Done;
         }
 
