@@ -62,7 +62,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CounterControl">
-      <HintPath>..\ServerBin\CounterControl.exe</HintPath>
+      <HintPath>$(OrleansSDK)\Binaries\OrleansServer\CounterControl.exe</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
@@ -90,9 +90,6 @@
     </Reference>
     <Reference Include="OrleansRuntime">
       <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntime.dll</HintPath>
-    </Reference>
-    <Reference Include="OrleansRuntimeGrainInterfaces">
-      <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntimeGrainInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

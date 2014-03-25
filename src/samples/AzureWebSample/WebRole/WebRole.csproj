@@ -14,10 +14,14 @@
     <RootNamespace>Orleans.Azure.Samples.Web</RootNamespace>
     <AssemblyName>Orleans.Azure.Samples.WebRole</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <SccProjectName></SccProjectName>
-    <SccLocalPath></SccLocalPath>
-    <SccAuxPath></SccAuxPath>
-    <SccProvider></SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <UseIISExpress>false</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -76,9 +80,6 @@
     </Reference>
     <Reference Include="OrleansRuntime">
       <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntime.dll</HintPath>
-    </Reference>
-    <Reference Include="OrleansRuntimeGrainInterfaces">
-      <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntimeGrainInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
