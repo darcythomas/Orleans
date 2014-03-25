@@ -1,0 +1,40 @@
+﻿TicTacToe Readme File
+
+This samlple is based on the classic "TicTacToe" or "Noughts and Crosses” game that many people will remember from their childhood. Its game logic is simple, which makes it an excellent sample for showing how a turn-based game could be easily implemented in Orleans. A game like oxo may not at first sight seem a natural fit for Orleans, if you only think about it in terms of a singler game. However, within a social game context, such as a Facebook game, where thousands of players could be playing dozens of games at any one time - some games waiting for the opponent to join, others mid game, waiting for the next move to play out, then it is a much more natural fit, letting developers concentrate on expressing the game logic in Orleans grains, and letting the runtime handle the scaling.
+
+There are two main grains in the game, one representing a player, and the other a game. 
+
+Every user is represented by a grain, using a Guid to uniquely identify the user, and that Guid is passed as a cookie to the MVC web application. The IPlayer interface that the grain implements defines the operations that a user can perform:
+
+public interface IPlayer : IGrain {
+        Task<List<Guid>> GetActiveGames();
+        Task<List<GameSummary>> GetGameSummaries();
+        Task<Guid> CreateGame();
+        Task<GameState> JoinGame(Guid gameId);
+        Task LeaveGame(Guid gameId, GameOutcome outcome);
+        Task SetUsername(string username);
+        Task<string> GetUsername(); }
+
+The main activities the player grain handles revolve around creating new games (so another player can then join), leaving a game (once it is over), and tracking the progress of all active games.
+
+Each game is also represented by a grain, and also uses a Guid to uniquely identify that game, which is set when the game is created.
+
+public interface IGame : Orleans.IGrain {
+        Task<GameState> AddPlayerToGame(Guid player);
+        Task<List<Guid>> GetPlayers();
+        Task<GameState> GetState();
+        Task<List<GameMove>> GetMoves();
+        Task<GameState> MakeMove(GameMove move);
+        Task<Guid> NextPlayer();
+        Task<GameSummary> GetSummary(Guid player);
+        Task SetName(string name);  }
+
+Once a user grain creates a game, that user then adds themselves to that game. Once a game is joined by a second player, the game can start, and players make their turns until the game ends, with either a draw or a winner. The grain manages the internal state of the game, list of grains representing each players, whose turn it is next, the game state (awaiting a second player, in play, or finished), and the oxo grid that represents the game. The MakeMove function is where the bulk of the game logic is handled, checking the validity of a move, and once played, checks if that move ends the game. In the case of the game ending, the player grains are informed of the outcome via the LeaveGame call.
+
+The game was designed with social gaming in mind, so the main mechanism for inviting other players is an “out of band” from the game, and would probably be an invite to a friend, sending the Guid that represents the game. As an optimisation purely for testing, a pairing grain was created that uses MemoryCache to hold a the list of games that are available to join, with an expiry of one hour, to stop "stale" games appearing on the list.
+
+The user interface is an ASP.NET MCV application, using JavaScript to implement the user interface logic with Handlebars templates (http://handlebarsjs.com/) and the GameController act as the Orleans client to interact with the grains. 
+
+The sample comes complete with a Windows Azure project, so it can be run locally in the Windows Azure local emulator, or deployed as a real cloud service. If running locally, you will need to create multiple "private" browsing sessions, to ensure each browser session is recognised as a new player.   
+
+

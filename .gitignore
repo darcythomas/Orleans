@@ -39,7 +39,9 @@
 *.codegen.cs
 packages/
 ipch/
+bin/
 obj/
+csx/
 *.resfiles
 [Bb]in
 Binaries/
