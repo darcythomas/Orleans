@@ -1,0 +1,19 @@
+﻿;; Simple Adventure
+Room| west-of-house| You are standing in an open field west of a white house with a boarded front door.| forest| | |
+Room| forest| This is a dimly lit forest, with large trees all around.| clearing| west-of-house| |
+Room| clearing| You are in a clearing, with a forest surrounding you on the west and south.| |forest|| canyon
+Room| canyon| You are at the top of the great canyon on its south wall.| | | clearing| beach
+Room| beach| You are on a small beach on the continuation of the Frigid River past the falls.||clearing||canyon
+Room| living-room| You are in the living room.|||||
+Thing| key| Brass key| clearing
+;; Monster should be declared after rooms (the names were generated randomly!)
+Monster| Dire Consumer
+Monster| Faerie Wind Horror
+Monster| First Dirge Twister
+Monster| Hangman-snapper
+Monster| Holy Hound Leech
+Monster| Huntrock Siren
+Monster| Maceherd Slicer
+Monster| Master Man-keeper
+Monster| Musk Dissector
+Monster| Rusttalon
