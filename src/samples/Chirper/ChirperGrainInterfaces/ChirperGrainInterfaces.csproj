@@ -37,12 +37,6 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\Chirper.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,15 +60,9 @@
     <Compile Include="Properties\orleans.codegen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Chirper.snk">
-      <Link>Chirper.snk</Link>
-    </None>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <OrleansProjectType>Client</OrleansProjectType>
-    <SnkFile>$(SolutionDir)Chirper.snk</SnkFile>
     <OrleansReferencesBase>$(OrleansSDK)\Binaries\OrleansClient</OrleansReferencesBase>
   </PropertyGroup>
   <Import Project="$(OrleansSDK)\Binaries\OrleansClient\Orleans.SDK.targets" />

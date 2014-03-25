@@ -47,6 +47,8 @@ namespace Orleans.Samples.Chirper2012.Client
                             Console.Write("Enter a comment: ");
                             line = Console.ReadLine();
                         }
+
+                        Environment.Exit(0);
                     }
                     run.Wait();
                     if (run.IsFaulted)

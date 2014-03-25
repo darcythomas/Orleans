@@ -19,12 +19,6 @@
     <SccAuxPath></SccAuxPath>
     <SccProvider></SccProvider>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\Chirper.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
@@ -93,9 +87,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Chirper.snk">
-      <Link>Chirper.snk</Link>
-    </None>
     <None Include="..\NetworkLoader\GraphData\Network-1000nodes-27000edges.graphml">
       <Link>GraphData\Network-1000nodes-27000edges.graphml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

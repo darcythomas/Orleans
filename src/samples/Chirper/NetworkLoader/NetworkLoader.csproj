@@ -39,12 +39,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\Chirper.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Orleans">
       <HintPath>$(OrleansSDK)\Binaries\OrleansClient\Orleans.dll</HintPath>
@@ -65,9 +59,6 @@
     <Compile Include="StatKeeper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Chirper.snk">
-      <Link>Chirper.snk</Link>
-    </None>
     <None Include="App.config" />
     <Content Include="$(OrleansSDK)\Binaries\OrleansClient\ClientConfiguration.xml">
       <Link>ClientConfiguration.xml</Link>
