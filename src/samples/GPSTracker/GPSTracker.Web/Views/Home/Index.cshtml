@@ -1,0 +1,54 @@
+﻿
+<div class="row" id="content">
+
+</div>
+<div id='mapDiv'></div>       
+<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+
+<script>
+    var map;
+    var devices = [];
+
+    function update(message) {
+        var loc = new Microsoft.Maps.Location(message.Latitude, message.Longitude);
+        if (devices[message.DeviceId]) {
+            devices[message.DeviceId].setLocation(loc);
+        } else {
+            devices[message.DeviceId] = new Microsoft.Maps.Pushpin(loc);
+            map.entities.push(devices[message.DeviceId]);
+        }
+        if (message.Velocity < 6000) {
+            devices[message.DeviceId].setOptions({ icon: "http://www.bingmapsportal.com/Content/poi_custom.png" })
+        } else {
+            devices[message.DeviceId].setOptions({ icon: "http://ecn.dev.virtualearth.net/mapcontrol/v7.0/7.0.20140121124250.64/i/poi_search.png" })
+        }
+
+    }
+
+    $(document).ready(function () {
+        var hub = $.connection.locationHub;
+        
+        hub.client.locationUpdate = function (message) {
+            update(message);
+        }
+
+        hub.client.locationUpdates = function (messages) {
+            messages.Messages.forEach(update);
+        }
+
+        $.connection.hub.start().done(function () {
+            console.log("listening for messages");
+        })
+
+        var mapOptions = {
+            credentials: "ApXf25xkJ6-Bhq7ESFChpfIPDeQ8hMh9Cj16mnNmmbIZuQjr7mGUeaJScpzO5qLe",
+            center: new Microsoft.Maps.Location(38.5,-101),
+            mapTypeId: Microsoft.Maps.MapTypeId.road,
+            zoom: 4,
+            showScalebar: false
+        }
+
+        map = new Microsoft.Maps.Map(document.getElementById("mapDiv"), mapOptions);
+    });
+
+</script>
