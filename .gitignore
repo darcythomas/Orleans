@@ -46,4 +46,4 @@ Binaries/
 Intermediate/
 _UpgradeReport_Files/
 UpgradeLog.*
-
+*.azurePubxml

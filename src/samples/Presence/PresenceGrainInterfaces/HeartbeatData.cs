@@ -21,6 +21,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using Orleans.Serialization;
 
 namespace Orleans.Samples.Presence.GrainInterfaces
 {
@@ -79,22 +80,12 @@ namespace Orleans.Samples.Presence.GrainInterfaces
     {
         public static byte[] Serialize(object o)
         {
-            IFormatter formatter = new BinaryFormatter();
-
-            using (var stream = new MemoryStream())
-            {
-                formatter.Serialize(stream, o);
-                return stream.ToArray();
-            }
+            return SerializationManager.SerializeToByteArray(o);
         }
+
         public static HeartbeatData Deserialize(byte [] data)
         {
-            IFormatter formatter = new BinaryFormatter();
-            
-            using (var stream = new MemoryStream(data))
-            {
-                return (HeartbeatData) formatter.Deserialize(stream);
-            }
+            return SerializationManager.DeserializeFromByteArray<HeartbeatData>(data);
         }
     }
 }
