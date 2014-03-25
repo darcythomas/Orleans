@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresenceGrainInterfaces", "PresenceGrainInterfaces\PresenceGrainInterfaces.csproj", "{60A27932-4B5E-4743-B351-A2C4D4924D94}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresenceGrains", "PresenceGrains\PresenceGrains.csproj", "{40C9F3F6-D658-4189-BD1F-002E35D5FB74}"
@@ -11,12 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresencePlayerWatcher", "Pl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FB70C3EB-1675-4C3C-B748-C5C6BCB976D8}"
 	ProjectSection(SolutionItems) = preProject
-		1.Demo Player Watcher.cmd = 1.Demo Player Watcher.cmd
-		2.Demo Load Generator.cmd = 2.Demo Load Generator.cmd
+		1.Demo Start Silo.cmd = 1.Demo Start Silo.cmd
+		2.Demo Player Watcher.cmd = 2.Demo Player Watcher.cmd
+		3.Demo Load Generator.cmd = 3.Demo Load Generator.cmd
 	EndProjectSection
 EndProject
 Global
-	
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
