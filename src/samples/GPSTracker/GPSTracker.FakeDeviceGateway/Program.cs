@@ -29,6 +29,12 @@ namespace GPSTracker.FakeDeviceGateway
         static int counter = 0;
         static Random rand = new Random();
 
+        // San Francisco: approximate boundaries.
+        const double SFLatMin = 37.708;
+        const double SFLatMax = 37.78;
+        const double SFLonMin = -122.50;
+        const double SFLonMax = -122.39;
+
         static void Main(string[] args)
         {
             OrleansClient.Initialize("LocalConfiguration.xml");
@@ -39,10 +45,10 @@ namespace GPSTracker.FakeDeviceGateway
                 devices.Add(new Model()
                 {
                     DeviceId = i,
-                    Lat = rand.NextDouble(30, 47),
-                    Lon = rand.NextDouble(-122, -81),
+                    Lat = rand.NextDouble(SFLatMin, SFLatMax),
+                    Lon = rand.NextDouble(SFLonMin, SFLonMax),
                     Direction = rand.NextDouble(-Math.PI, Math.PI),
-                    Speed = rand.NextDouble(0, 0.05)
+                    Speed = rand.NextDouble(0, 0.0005)
                 });
             }
 
@@ -51,7 +57,7 @@ namespace GPSTracker.FakeDeviceGateway
             timer.Interval = 1000;
             timer.Elapsed += (s, e) =>
             {
-                Console.WriteLine(counter);
+                Console.Write(". ");
                 Interlocked.Exchange(ref counter, 0);
             };
             timer.Start();
@@ -67,7 +73,7 @@ namespace GPSTracker.FakeDeviceGateway
                         try
                         {
                             SendMessage(model).Wait();
-                            Thread.Sleep(1000);
+                            Thread.Sleep(rand.Next(500,2500));
                         }
                         catch (Exception ex)
                         {
@@ -85,13 +91,29 @@ namespace GPSTracker.FakeDeviceGateway
 
         private static async Task SendMessage(Model model)
         {
+            model.Speed += rand.NextDouble(-0.0001, 0.0001);
             model.Direction += rand.NextDouble(-0.001, 0.001);
-            model.Speed += rand.NextDouble(-0.001, 0.001);
+
+            var lastLat = model.Lat;
+            var lastLon = model.Lon;
+
             model.Lat += Math.Cos(model.Direction) * model.Speed;
             model.Lon += Math.Sin(model.Direction) * model.Speed;
-            model.Speed = model.Speed.Cap(0, 0.2);
-            model.Lat = model.Lat.Cap(30, 47);
-            model.Lon = model.Lon.Cap(-120, -81);
+            model.Lat = model.Lat.Cap(SFLatMin, SFLatMax);
+            model.Lon = model.Lon.Cap(SFLonMin, SFLonMax);
+
+            if (lastLat == model.Lat || lastLon == model.Lon)
+            {
+                model.Speed = -model.Speed;
+                model.Lat += Math.Cos(model.Direction) * model.Speed;
+                model.Lon += Math.Sin(model.Direction) * model.Speed;
+                model.Lat = model.Lat.Cap(SFLatMin, SFLatMax);
+                model.Lon = model.Lon.Cap(SFLonMin, SFLonMax);
+            }
+
+            lastLat = model.Lat;
+            lastLon = model.Lon;
+
             var device = DeviceGrainFactory.GetGrain(model.DeviceId);
             Interlocked.Increment(ref counter);
             await device.ProcessMessage(new DeviceMessage(model.Lat, model.Lon, counter, model.DeviceId, DateTime.UtcNow));

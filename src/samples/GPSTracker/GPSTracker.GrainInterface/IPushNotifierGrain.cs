@@ -16,9 +16,11 @@
 
 using GPSTracker.Common;
 using System.Threading.Tasks;
+using Orleans;
 
 namespace GPSTracker.GrainInterface
 {
+    [StatelessWorker]
     public interface IPushNotifierGrain : Orleans.IGrain
     {
         Task SendMessage(VelocityMessage message);

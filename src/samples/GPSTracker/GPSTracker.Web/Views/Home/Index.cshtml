@@ -17,7 +17,7 @@
             devices[message.DeviceId] = new Microsoft.Maps.Pushpin(loc);
             map.entities.push(devices[message.DeviceId]);
         }
-        if (message.Velocity < 6000) {
+        if (message.Velocity < 600) {
             devices[message.DeviceId].setOptions({ icon: "http://www.bingmapsportal.com/Content/poi_custom.png" })
         } else {
             devices[message.DeviceId].setOptions({ icon: "http://ecn.dev.virtualearth.net/mapcontrol/v7.0/7.0.20140121124250.64/i/poi_search.png" })
@@ -41,10 +41,10 @@
         })
 
         var mapOptions = {
-            credentials: "ApXf25xkJ6-Bhq7ESFChpfIPDeQ8hMh9Cj16mnNmmbIZuQjr7mGUeaJScpzO5qLe",
-            center: new Microsoft.Maps.Location(38.5,-101),
+            credentials: "YOUR_BING_MAPS_KEY",
+            center: new Microsoft.Maps.Location(37.75, -122.45),
             mapTypeId: Microsoft.Maps.MapTypeId.road,
-            zoom: 4,
+            zoom: 13,
             showScalebar: false
         }
 
