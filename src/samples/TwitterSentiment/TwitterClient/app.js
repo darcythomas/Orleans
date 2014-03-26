@@ -7,10 +7,10 @@ var url = require('url');
 // https://dev.twitter.com/
 
 var twit = new twitter({
-    consumer_key: 'oKlkIYrr4Wfs7FCvGBFw6g',
-    consumer_secret: 'wYtvBvem6FHGUzJTjujq80sCM5PVqri6jRqjXkTrE0',
-    access_token_key: '567529157-QqDo5WEWFyQEtMiTyTknVtgZOizRyuAWujIeMEpF',
-    access_token_secret: 'gVjpALEeqbPKRPPbfzDyynU9xUf63rzKS8vAh2EQg9V3r'
+    consumer_key: 'API KEY',
+    consumer_secret: 'API SECRET',
+    access_token_key: 'ACCESS TOKEN',
+    access_token_secret: 'ACCESS SECRET'
 });
 
 twit.stream('filter', {locations:'-180,-90,180,90'}, function(stream) {
