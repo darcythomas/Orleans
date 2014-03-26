@@ -40,34 +40,6 @@ namespace GPSTracker.GrainImplementation
             return base.ActivateAsync();
         }
 
-        /*
-        /// <summary>
-        /// Fast, but you have no idea if anyone is listening, no stream back pressure.
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public Task ProcessMessageUnsafe(VelocityMessage message)
-        {
-            if (null == this.LastMessage || this.LastMessage.Latitude != message.MessageId || this.LastMessage.Longitude != message.Latitude)
-            {
-                // only push notifications if necessary
-                // at this point speed / distance could be calcuated
-                this.LastMessage = message;
-                var notifier = PushNotifierGrainFactory.GetGrain(key % NotificationPoolSize);
-                notifier.SendMessage(message);
-            }
-            else
-            {
-                this.LastMessage = message;
-            }
-            return TaskDone.Done;
-        }*/
-
-        /// <summary>
-        /// Slower, but more reliable
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
         public async Task ProcessMessage(DeviceMessage message)
         {
             if (null == this.LastMessage || this.LastMessage.Latitude != message.Latitude || this.LastMessage.Longitude != message.Longitude)

@@ -73,9 +73,6 @@
     <Reference Include="OrleansRuntime">
       <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntime.dll</HintPath>
     </Reference>
-    <Reference Include="OrleansRuntimeGrainInterfaces">
-      <HintPath>$(OrleansSDK)\Binaries\OrleansServer\OrleansRuntimeGrainInterfaces.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Services.Client" />
