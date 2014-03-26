@@ -15,14 +15,7 @@
 //*********************************************************
 using System;
 using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.Services.Client;
-using System.Data.Services.Common;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 
 using Orleans;
 using Orleans.Providers;
@@ -57,9 +50,10 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Initializes the provider during silo startup.
         /// </summary>
-        /// <param name="name">The name of the provider</param>
-        /// <param name="storageProviderManager">A provider manager reference.</param>
-        /// <returns></returns>
+        /// <param name="name">The name of this provider instance.</param>
+        /// <param name="providerRuntime">A Orleans runtime object managing all storage providers.</param>
+        /// <param name="config">Configuration info for this provider instance.</param>
+        /// <returns>Completion promise for this operation.</returns>
         public override Task Init(string name, IProviderRuntime providerRuntime, IProviderConfiguration config)
         {
             this.Name = name;
@@ -89,14 +83,13 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Deletes a file representing a grain state object.
         /// </summary>
-        /// <param name="typename">The type of the grain state object.</param>
-        /// <param name="fileName">The grain id string.</param>
+        /// <param name="collectionName">The type of the grain state object.</param>
+        /// <param name="key">The grain id string.</param>
+        /// <returns>Completion promise for this operation.</returns>
         public Task Delete(string collectionName, string key)
         {
-            var fName = key + "." + collectionName;
-            var path = Path.Combine(directory.FullName, fName);
+            FileInfo fileInfo = GetStorageFilePath(collectionName, key);
 
-            var fileInfo = new FileInfo(path);
             if (fileInfo.Exists)
                 fileInfo.Delete();
 
@@ -106,14 +99,13 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Reads a file representing a grain state object.
         /// </summary>
-        /// <param name="fileName">The grain id string.</param>
-        /// <param name="typename">The type of the grain state object.</param>
+        /// <param name="collectionName">The type of the grain state object.</param>
+        /// <param name="key">The grain id string.</param>
+        /// <returns>Completion promise for this operation.</returns>
         public async Task<string> Read(string collectionName, string key)
         {
-            var fName = key + "." + collectionName;
-            var path = Path.Combine(directory.FullName, fName);
+            FileInfo fileInfo = GetStorageFilePath(collectionName, key);
 
-            var fileInfo = new FileInfo(path);
             if (!fileInfo.Exists)
                 return null;
 
@@ -126,14 +118,13 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Writes a file representing a grain state object.
         /// </summary>
-        /// <param name="fileName">The grain id string.</param>
-        /// <param name="typename">The type of the grain state object.</param>
+        /// <param name="collectionName">The type of the grain state object.</param>
+        /// <param name="key">The grain id string.</param>
+        /// <param name="entityData">The grain state data to be stored./</param>
+        /// <returns>Completion promise for this operation.</returns>
         public async Task Write(string collectionName, string key, string entityData)
         {
-            string fileName = key + "." + collectionName;
-            var path = Path.Combine(directory.FullName, fileName);
-
-            var fileInfo = new FileInfo(path);
+            FileInfo fileInfo = GetStorageFilePath(collectionName, key);
 
             using (var stream = new StreamWriter(fileInfo.Open(FileMode.Create, FileAccess.Write)))
             {
@@ -145,6 +136,19 @@ namespace Samples.StorageProviders
         {
         }
 
-        private DirectoryInfo directory;
+        /// <summary>
+        /// Returns the file path for storing that data with these keys.
+        /// </summary>
+        /// <param name="collectionName">The type of the grain state object.</param>
+        /// <param name="key">The grain id string.</param>
+        /// <returns>File info for this storage data file.</returns>
+        private FileInfo GetStorageFilePath(string collectionName, string key)
+        {
+            string fileName = key + "." + collectionName;
+            string path = Path.Combine(directory.FullName, fileName);
+            return new FileInfo(path);
+        }
+
+        private readonly DirectoryInfo directory;
     }
 }

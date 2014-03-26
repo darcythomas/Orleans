@@ -14,8 +14,8 @@
 //
 //*********************************************************
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Orleans;
 using Orleans.Providers;
 
@@ -54,8 +54,10 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Initializes the storage provider.
         /// </summary>
-        /// <param name="name">The storage provider name.</param>
-        /// <param name="storageProviderManager">A Orleans runtime object managing all storage providers.</param>
+        /// <param name="name">The name of this provider instance.</param>
+        /// <param name="providerRuntime">A Orleans runtime object managing all storage providers.</param>
+        /// <param name="config">Configuration info for this provider instance.</param>
+        /// <returns>Completion promise for this operation.</returns>
         public override Task Init(string name, IProviderRuntime providerRuntime, IProviderConfiguration config)
         {
             this.Name = name;
@@ -89,8 +91,9 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Deletes a file representing a grain state object.
         /// </summary>
-        /// <param name="fileName">The grain id string.</param>
-        /// <param name="typename">The type of the grain state object.</param>
+        /// <param name="collectionName">The type of the grain state object.</param>
+        /// <param name="key">The grain id string.</param>
+        /// <returns>Completion promise for this operation.</returns>
         public Task Delete(string collectionName, string key)
         {
             var collection = GetCollection(collectionName);
@@ -106,8 +109,9 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Reads a file representing a grain state object.
         /// </summary>
-        /// <param name="fileName">The grain id string.</param>
-        /// <param name="typename">The type of the grain state object.</param>
+        /// <param name="collectionName">The type of the grain state object.</param>
+        /// <param name="key">The grain id string.</param>
+        /// <returns>Completion promise for this operation.</returns>
         public Task<string> Read(string collectionName, string key)
         {
             var collection = GetCollection(collectionName);
@@ -133,8 +137,10 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Writes a file representing a grain state object.
         /// </summary>
-        /// <param name="fileName">The grain id string.</param>
-        /// <param name="typename">The type of the grain state object.</param>
+        /// <param name="collectionName">The type of the grain state object.</param>
+        /// <param name="key">The grain id string.</param>
+        /// <param name="entityData">The grain state data to be stored./</param>
+        /// <returns>Completion promise for this operation.</returns>
         public Task Write(string collectionName, string key, string entityData)
         {
             var collection = GetOrCreateCollection(collectionName);
@@ -196,7 +202,7 @@ namespace Samples.StorageProviders
         }
 
         private MongoServer _dbServer;
-        private MongoDatabase _database;
+        private readonly MongoDatabase _database;
 
     }
 }

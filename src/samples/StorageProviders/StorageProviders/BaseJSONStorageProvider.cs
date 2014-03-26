@@ -51,15 +51,17 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Constructor
         /// </summary>
-        public BaseJSONStorageProvider()
+        protected BaseJSONStorageProvider()
         {
         }
 
         /// <summary>
         /// Initializes the storage provider.
         /// </summary>
-        /// <param name="name">The storage provider name.</param>
-        /// <param name="storageProviderManager">A Orleans runtime object managing all storage providers.</param>
+        /// <param name="name">The name of this provider instance.</param>
+        /// <param name="providerRuntime">A Orleans runtime object managing all storage providers.</param>
+        /// <param name="config">Configuration info for this provider instance.</param>
+        /// <returns>Completion promise for this operation.</returns>
         public virtual Task Init(string name, IProviderRuntime providerRuntime, IProviderConfiguration config)
         {
             Log = providerRuntime.GetLogger(this.GetType().FullName, Logger.LoggerType.Application);
@@ -69,7 +71,7 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Closes the storage provider during silo shutdown.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Completion promise for this operation.</returns>
         public Task Close()
         {
             if (DataManager != null)
@@ -83,9 +85,9 @@ namespace Samples.StorageProviders
         /// grain state object.
         /// </summary>
         /// <param name="grainType">A string holding the name of the grain class.</param>
-        /// <param name="grainId">Represents the long-lived identity of the grain.</param>
+        /// <param name="grainReference">Represents the long-lived identity of the grain.</param>
         /// <param name="grainState">A reference to an object to hold the persisted state of the grain.</param>
-        /// <returns></returns>
+        /// <returns>Completion promise for this operation.</returns>
         public async Task ReadStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
         {
             if (DataManager == null) throw new ArgumentException("DataManager property not initialized");
@@ -100,9 +102,9 @@ namespace Samples.StorageProviders
         /// Writes the persisted state from a grain state object into its backing store.
         /// </summary>
         /// <param name="grainType">A string holding the name of the grain class.</param>
-        /// <param name="grainId">Represents the long-lived identity of the grain.</param>
+        /// <param name="grainReference">Represents the long-lived identity of the grain.</param>
         /// <param name="grainState">A reference to an object holding the persisted state of the grain.</param>
-        /// <returns></returns>
+        /// <returns>Completion promise for this operation.</returns>
         public Task WriteStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
         {
             if (DataManager == null) throw new ArgumentException("DataManager property not initialized");
@@ -114,7 +116,7 @@ namespace Samples.StorageProviders
         /// Removes grain state from its backing store, if found.
         /// </summary>
         /// <param name="grainType">A string holding the name of the grain class.</param>
-        /// <param name="grainId">Represents the long-lived identity of the grain.</param>
+        /// <param name="grainReference">Represents the long-lived identity of the grain.</param>
         /// <param name="grainState">An object holding the persisted state of the grain.</param>
         /// <returns></returns>
         public Task ClearStateAsync(string grainType, GrainReference grainReference, GrainState grainState)
@@ -127,8 +129,7 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Serializes from a grain instance to a JSON document.
         /// </summary>
-        /// <param name="grainState"></param>
-        /// <param name="entity"></param>
+        /// <param name="grainState">Grain state to be converted into JSON storage format.</param>
         /// <remarks>
         /// See:
         /// http://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer.aspx
@@ -144,8 +145,8 @@ namespace Samples.StorageProviders
         /// <summary>
         /// Constructs a grain state instance by deserializing a JSON document.
         /// </summary>
-        /// <param name="grainState"></param>
-        /// <param name="entity"></param>
+        /// <param name="grainState">Grain state to be populated for storage.</param>
+        /// <param name="entityData">JSON storage format representaiton of the grain state.</param>
         protected static void ConvertFromStorageFormat(IGrainState grainState, string entityData)
         {
             JavaScriptSerializer deserializer = new JavaScriptSerializer();
