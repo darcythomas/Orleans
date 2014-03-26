@@ -6,6 +6,8 @@ set CMDHOME=%~dp0.
 
 set USER=44444842
 
+@title ChirperClient User=%USER%
+
 if exist "%CMDHOME%\ChirperClient\bin\Debug\Chirper2012Client.exe" (
 "%CMDHOME%\ChirperClient\bin\Debug\Chirper2012Client.exe" %USER%
 ) else (
