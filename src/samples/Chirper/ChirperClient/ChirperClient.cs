@@ -64,7 +64,7 @@ namespace Orleans.Samples.Chirper2012.Client
                 {
                     // ... and then subscribe to receive any new chirps
                     viewer = await ChirperViewerFactory.CreateObjectReference(this);
-                    Console.WriteLine("Listening for new chirps...");
+                    if (!this.IsPublisher) Console.WriteLine("Listening for new chirps...");
                     await account.ViewerConnect(viewer);
                     // Ctrl-C to exit
                     Thread.Sleep(-1);
@@ -88,12 +88,15 @@ namespace Orleans.Samples.Chirper2012.Client
 
         public void NewChirpArrived(ChirperMessage chirp)
         {
-            Console.WriteLine(
-                @"New chirp from @{0} at {1} on {2}: {3}",
-                chirp.PublisherAlias,
-                chirp.Timestamp.ToShortTimeString(),
-                chirp.Timestamp.ToShortDateString(),
-                chirp.Message);
+            if (!this.IsPublisher)
+            {
+                Console.WriteLine(
+                    @"New chirp from @{0} at {1} on {2}: {3}",
+                    chirp.PublisherAlias,
+                    chirp.Timestamp.ToShortTimeString(),
+                    chirp.Timestamp.ToShortDateString(),
+                    chirp.Message);
+            }
         }
 
         public void SubscriptionAdded(ChirperUserInfo following)

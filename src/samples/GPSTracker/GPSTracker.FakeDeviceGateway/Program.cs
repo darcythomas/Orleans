@@ -73,7 +73,7 @@ namespace GPSTracker.FakeDeviceGateway
                         try
                         {
                             SendMessage(model).Wait();
-                            Thread.Sleep(1000);
+                            Thread.Sleep(rand.Next(500,2500));
                         }
                         catch (Exception ex)
                         {
