@@ -14,27 +14,46 @@
 //
 //*********************************************************
 
-using AdventureGrainInterfaces;
 using Orleans;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace AdventureSetup
 {
     class Program
     {
-        static void Main(string [] args)
+        static int Main(string [] args)
         {
+            string mapFileName = "..\\..\\AdventureMap.json";
+
+            switch (args.Length)
+            {
+                default:
+                    Console.WriteLine("*** Invalid command line arguments.");
+                    return -1;
+                case 0:
+                    break;
+                case 1:
+                    mapFileName = args[0];
+                    break;
+            }
+
+            if (!File.Exists(mapFileName))
+            {
+                Console.WriteLine("*** File not found: {0}", mapFileName);
+                return -2;
+            }
+
             OrleansClient.Initialize();
 
+            Console.WriteLine("Map file name is '{0}'.", mapFileName);
             Console.WriteLine("Setting up Adventure, please wait ...");
             Adventure adventure = new Adventure();     
-            adventure.Configure("AdventureConfig.txt").Wait();
+            adventure.Configure(mapFileName).Wait();
             Console.WriteLine("Adventure setup completed.");
             Console.ReadLine();
+
+            return 0;
         }
     }
 }
