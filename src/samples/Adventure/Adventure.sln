@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureClient", "AdventureClient\AdventureClient.csproj", "{E0BE4D41-CA6F-412E-890A-62A0EBF07228}"
 EndProject
@@ -12,6 +12,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureSetup", "AdventureSetup\AdventureSetup.csproj", "{9BAF0036-B2DA-4403-8648-8E6F49D1152F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{0646B491-8C85-4B00-97E2-6EE4A257A272}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{96B22612-F11E-4388-AD56-36DE2F3D51A5}"
+	ProjectSection(SolutionItems) = preProject
+		1.Demo Start Silo.cmd = 1.Demo Start Silo.cmd
+		2.Demo Setup.cmd = 2.Demo Setup.cmd
+		3.Demo Client.cmd = 3.Demo Client.cmd
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
