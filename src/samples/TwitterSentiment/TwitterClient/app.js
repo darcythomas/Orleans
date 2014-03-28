@@ -9,8 +9,8 @@ var url = require('url');
 var twit = new twitter({
     consumer_key: 'API KEY',
     consumer_secret: 'API SECRET',
-    access_token_key: 'ACCESS TOKEN',
-    access_token_secret: 'ACCESS SECRET'
+    access_token_key: 'ACCESS TOKEN KEY',
+    access_token_secret: 'ACCESS TOKEN SECRET'
 });
 
 twit.stream('filter', {locations:'-180,-90,180,90'}, function(stream) {
