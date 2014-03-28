@@ -19,17 +19,20 @@ using System.Threading.Tasks;
 
 namespace AdventureGrainInterfaces
 {
+    /// <summary>
+    /// A player is, well, there's really no other good name...
+    /// </summary>
     public interface IPlayerGrain : Orleans.IGrain
     {
-        // Players have a name
+        // Players have names
         Task<string> Name();
         Task SetName(string name);
 
-        // Players are located in exactly one room
+        // Each player is located in exactly one room
         Task SetRoomGrain(IRoomGrain room);
         Task<IRoomGrain> RoomGrain();
 
-        // Unless they are dead
+        // Until Death comes knocking
         Task Die();
 
         // A Player takes his turn by calling Play with a command

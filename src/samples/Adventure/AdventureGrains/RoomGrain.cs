@@ -37,10 +37,7 @@ namespace AdventureGrains
         List<MonsterInfo> monsters = new List<MonsterInfo>();
         List<Thing> things = new List<Thing>();
 
-        IRoomGrain northGrain = null;
-        IRoomGrain southGrain = null;
-        IRoomGrain eastGrain = null;
-        IRoomGrain westGrain = null;
+        Dictionary<string, IRoomGrain> exits = new Dictionary<string, IRoomGrain>();
 
         Task IRoomGrain.Enter(PlayerInfo player)
         {
@@ -50,13 +47,14 @@ namespace AdventureGrains
 
         Task IRoomGrain.Enter(MonsterInfo monster)
         {
+            monsters.RemoveAll(x => x.Id == monster.Id);
             monsters.Add(monster);
             return TaskDone.Done;
         }
 
         Task IRoomGrain.Exit(MonsterInfo monster)
         {
-            monsters.RemoveAll(x => x.Key == monster.Key);
+            monsters.RemoveAll(x => x.Id == monster.Id);
             return TaskDone.Done;
         }
 
@@ -78,21 +76,16 @@ namespace AdventureGrains
             return TaskDone.Done;
         }
 
-        Task IRoomGrain.SetDescription(string description)
+        Task IRoomGrain.SetInfo(RoomInfo info)
         {
-            this.description = description;
+            this.description = info.Description;
+
+            foreach (var kv in info.Directions)
+            {
+                this.exits.Add(kv.Key, RoomGrainFactory.GetGrain(kv.Value));
+            }
             return TaskDone.Done;
         }
-
-        Task IRoomGrain.SetExits(IRoomGrain north, IRoomGrain south, IRoomGrain east, IRoomGrain west)
-        {
-            this.northGrain = north;
-            this.southGrain = south;
-            this.eastGrain = east;
-            this.westGrain = west;
-            return TaskDone.Done;
-        }
-
 
         Task<Thing> IRoomGrain.FindThing(string name)
         {
@@ -105,64 +98,36 @@ namespace AdventureGrains
 
             sb.AppendLine(this.description);
 
-            sb.Append(" Exits to the ");
-
-            if (this.northGrain != null) sb.Append("north ");
-            if (this.southGrain != null) sb.Append("south ");
-            if (this.eastGrain != null) sb.Append("east ");
-            if (this.westGrain != null) sb.Append("west ");
-
-            sb.AppendLine();
-
             if (things.Count > 0)
             {
-                sb.AppendLine(" The following items are present:");
+                sb.AppendLine("The following things are present:");
                 foreach (var thing in things)
                 {
-                    sb.AppendLine(thing.Name);
+                    sb.Append("  ").AppendLine(thing.Name);
                 }
             }
 
-            if (players.Count > 1)
+            if (players.Count > 1 || monsters.Count > 0)
             {
-                sb.AppendLine("The following players are present:");
-                foreach (var player in players)
-                {
-                    sb.AppendLine(player.Name);
-                }
-            }
-
-            if (monsters.Count > 1)
-            {
-                sb.AppendLine("The following monsters are present:");
-                foreach (var monster in monsters)
-                {
-                    sb.AppendLine(monster.Name);
-                }
+                sb.AppendLine("Beware! These guys are in the room with you:");
+                if (players.Count > 1)
+                    foreach (var player in players)
+                    {
+                        sb.Append("  ").AppendLine(player.Name);
+                    }
+                if (monsters.Count > 0)
+                    foreach (var monster in monsters)
+                    {
+                        sb.Append("  ").AppendLine(monster.Name);
+                    }
             }
 
             return Task.FromResult(sb.ToString());
         }
 
-
-        Task<IRoomGrain> IRoomGrain.NorthGrain()
+        Task<IRoomGrain> IRoomGrain.ExitTo(string direction)
         {
-            return Task.FromResult(northGrain);
-        }
-
-        Task<IRoomGrain> IRoomGrain.SouthGrain()
-        {
-            return Task.FromResult(southGrain);
-        }
-
-        Task<IRoomGrain> IRoomGrain.EastGrain()
-        {
-            return Task.FromResult(eastGrain);
-        }
-
-        Task<IRoomGrain> IRoomGrain.WestGrain()
-        {
-            return Task.FromResult(westGrain);
+            return Task.FromResult((exits.ContainsKey(direction)) ? exits[direction] : null);
         }
     }
 }

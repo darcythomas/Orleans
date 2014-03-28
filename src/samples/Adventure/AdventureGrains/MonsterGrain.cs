@@ -31,7 +31,7 @@ namespace AdventureGrains
 
         public override Task ActivateAsync()
         {
-            this.monsterInfo.Key = this.GetPrimaryKeyLong();
+            this.monsterInfo.Id = this.GetPrimaryKeyLong();
 
             RegisterTimer((_) => Move(), null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
             return base.ActivateAsync();
@@ -61,31 +61,17 @@ namespace AdventureGrains
 
         async Task Move()
         {
+            var directions = new string [] { "north", "south", "west", "east" };
+
             var rand = new Random().Next(0, 4);
-            IRoomGrain nextRoom = null;
-            switch (rand)
-            {
-                case 0:
-                    nextRoom = await this.roomGrain.NorthGrain();
-                    break;
-                case 1:
-                    nextRoom = await this.roomGrain.SouthGrain();
-                    break;
-                case 2:
-                    nextRoom = await this.roomGrain.EastGrain();
-                    break;
-                case 3:
-                    nextRoom = await this.roomGrain.WestGrain();
-                    break;
-            }
+            IRoomGrain nextRoom = await this.roomGrain.ExitTo(directions[rand]);
+
             if (null == nextRoom) return;
 
-            await Task.WhenAll(
-                this.roomGrain.Exit(this.monsterInfo),
-                nextRoom.Enter(this.monsterInfo));
+            await this.roomGrain.Exit(this.monsterInfo);
+            await nextRoom.Enter(this.monsterInfo);
 
             this.roomGrain = nextRoom;
         }
-
     }
 }

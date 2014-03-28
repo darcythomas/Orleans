@@ -44,7 +44,7 @@ namespace AdventureClient
 
             var player = PlayerGrainFactory.GetGrain(Guid.NewGuid());
             player.SetName(name).Wait();
-            var room1 = RoomGrainFactory.GetGrain(0, "west-of-house");
+            var room1 = RoomGrainFactory.GetGrain(0);
             player.SetRoomGrain(room1).Wait();
 
             Console.WriteLine(player.Play("look").Result);

@@ -20,21 +20,16 @@ using System.Threading.Tasks;
 namespace AdventureGrainInterfaces
 {
     /// <summary>
-    /// A room is any location in a game.
+    /// A room is any location in a game, including outdoor locations and
+    /// spaces that are arguably better described as moist, cold, caverns.
     /// </summary>
-    [ExtendedPrimaryKey]
     public interface IRoomGrain : Orleans.IGrain
     {
         // Rooms have a textual description
         Task<string> Description();
-        Task SetDescription(string description);
+        Task SetInfo(RoomInfo info);
 
-        // Rooms have exits to other rooms
-        Task SetExits(IRoomGrain northRoomGrain, IRoomGrain southRoomGrain, IRoomGrain eastRoomGrain, IRoomGrain westRoomGrain);
-        Task<IRoomGrain> NorthGrain();
-        Task<IRoomGrain> SouthGrain();
-        Task<IRoomGrain> EastGrain();
-        Task<IRoomGrain> WestGrain();
+        Task<IRoomGrain> ExitTo(string direction);
 
         // Players can enter or exit a room
         Task Enter(PlayerInfo player);

@@ -13,6 +13,8 @@
 //    permissions and limitations under the License.
 //
 //*********************************************************
+using System;
+using System.Collections.Generic;
 
 using Orleans;
 
@@ -21,7 +23,8 @@ namespace AdventureGrainInterfaces
     [Immutable]
     public class MonsterInfo
     {
-        public long Key { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
+        public List<long> KilledBy { get; set; }
     }
 }

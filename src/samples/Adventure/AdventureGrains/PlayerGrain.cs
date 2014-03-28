@@ -45,7 +45,7 @@ namespace AdventureGrains
         {
             // Drop everything
             var tasks = new List<Task<string>>();
-            foreach (var thing in things)
+            foreach (var thing in new List<Thing>(things))
             {
                 tasks.Add(this.Drop(thing));
             }
@@ -58,6 +58,8 @@ namespace AdventureGrains
 
             // Exit the game
             await this.roomGrain.Exit(myInfo);
+
+            base.DeactivateOnIdle();
         }
 
         async Task<string> Drop(Thing thing)
@@ -102,31 +104,13 @@ namespace AdventureGrains
 
         async Task<string> Go(string direction)
         {
-            IRoomGrain destination = null;
-
-            switch (direction)
-            {
-                case "north":
-                    destination = await this.roomGrain.NorthGrain();
-                    break;
-                case "south":
-                    destination = await this.roomGrain.SouthGrain();
-                    break;
-                case "east":
-                    destination = await this.roomGrain.EastGrain();
-                    break;
-                case "west":
-                    destination = await this.roomGrain.WestGrain();
-                    break;
-                default:
-                    return "I don't understand.";
-            }
+            IRoomGrain destination = await this.roomGrain.ExitTo(direction);
 
             string myKeyExt;
             this.GetPrimaryKey(out myKeyExt);
             var myInfo = new PlayerInfo { Key = myKeyExt, Name = this.name };
 
-            var description = "You cannot go in that direction.";
+            StringBuilder description = new StringBuilder();
 
             if (destination != null)
             {
@@ -134,9 +118,26 @@ namespace AdventureGrains
                 await destination.Enter(myInfo);
 
                 this.roomGrain = destination;
-                description = await destination.Description();
+                var desc = await destination.Description();
+
+                if (desc != null)
+                    description.Append(desc);
             }
-            return description;
+            else
+            {
+                description.Append("You cannot go in that direction.");
+            }
+
+            if (things.Count > 0)
+            {
+                description.AppendLine("You are holding the following items:");
+                foreach (var thing in things)
+                {
+                    description.AppendLine(thing.Name);
+                }
+            }
+
+            return description.ToString();
         }
 
         private string RemoveStopWords(string s)
