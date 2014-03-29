@@ -41,7 +41,14 @@ namespace AdventureGrains
 
         Task IRoomGrain.Enter(PlayerInfo player)
         {
+            players.RemoveAll(x => x.Key == player.Key);
             players.Add(player);
+            return TaskDone.Done;
+        }
+
+        Task IRoomGrain.Exit(PlayerInfo player)
+        {
+            players.RemoveAll(x => x.Key == player.Key);
             return TaskDone.Done;
         }
 
@@ -58,14 +65,9 @@ namespace AdventureGrains
             return TaskDone.Done;
         }
 
-        Task IRoomGrain.Exit(PlayerInfo player)
-        {
-            players.RemoveAll(x => x.Key == player.Key);
-            return TaskDone.Done;
-        }
-
         Task IRoomGrain.Drop(Thing thing)
         {
+            things.RemoveAll(x => x.Id == thing.Id);
             things.Add(thing);
             return TaskDone.Done;
         }
@@ -82,7 +84,7 @@ namespace AdventureGrains
 
             foreach (var kv in info.Directions)
             {
-                this.exits.Add(kv.Key, RoomGrainFactory.GetGrain(kv.Value));
+                this.exits[kv.Key] = RoomGrainFactory.GetGrain(kv.Value);
             }
             return TaskDone.Done;
         }

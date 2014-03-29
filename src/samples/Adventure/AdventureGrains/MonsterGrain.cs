@@ -33,7 +33,7 @@ namespace AdventureGrains
         {
             this.monsterInfo.Id = this.GetPrimaryKeyLong();
 
-            RegisterTimer((_) => Move(), null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
+            RegisterTimer((_) => Move(), null, TimeSpan.FromSeconds(15), TimeSpan.FromMinutes(15));
             return base.ActivateAsync();
         }
 
@@ -50,6 +50,8 @@ namespace AdventureGrains
 
         async Task IMonsterGrain.SetRoomGrain(IRoomGrain room)
         {
+            if (this.roomGrain != null)
+                await this.roomGrain.Exit(this.monsterInfo);
             this.roomGrain = room;
             await this.roomGrain.Enter(this.monsterInfo);
         }
@@ -66,7 +68,8 @@ namespace AdventureGrains
             var rand = new Random().Next(0, 4);
             IRoomGrain nextRoom = await this.roomGrain.ExitTo(directions[rand]);
 
-            if (null == nextRoom) return;
+            if (null == nextRoom) 
+                return;
 
             await this.roomGrain.Exit(this.monsterInfo);
             await nextRoom.Enter(this.monsterInfo);

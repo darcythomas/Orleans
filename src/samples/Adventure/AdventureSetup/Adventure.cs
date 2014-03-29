@@ -54,7 +54,7 @@ namespace AdventureSetup
         {
             var rand = new Random();
 
-            var bytes = File.ReadAllText("AdventureMap.json");
+            var bytes = File.ReadAllText(filename);
 
             JavaScriptSerializer deserializer = new JavaScriptSerializer();
             var data = deserializer.Deserialize<MapInfo>(bytes);
@@ -62,7 +62,9 @@ namespace AdventureSetup
             var rooms = new List<IRoomGrain>();
             foreach (var room in data.Rooms)
             {
-                rooms.Add(await MakeRoom(room));
+                var roomGr = await MakeRoom(room);
+                if (room.Id >= 0)
+                    rooms.Add(roomGr);
             }
             foreach (var thing in data.Things)
             {
