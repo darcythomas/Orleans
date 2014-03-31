@@ -94,7 +94,19 @@ namespace AdventureGrains
             return Task.FromResult(things.Where(x => x.Name == name).FirstOrDefault());
         }
 
-        Task<string> IRoomGrain.Description()
+        Task<PlayerInfo> IRoomGrain.FindPlayer(string name)
+        {
+            name = name.ToLower();
+            return Task.FromResult(players.Where(x => x.Name.ToLower().Contains(name)).FirstOrDefault());
+        }
+
+        Task<MonsterInfo> IRoomGrain.FindMonster(string name)
+        {
+            name = name.ToLower();
+            return Task.FromResult(monsters.Where(x => x.Name.ToLower().Contains(name)).FirstOrDefault());
+        }
+
+        Task<string> IRoomGrain.Description(PlayerInfo whoisAsking)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -109,11 +121,13 @@ namespace AdventureGrains
                 }
             }
 
-            if (players.Count > 1 || monsters.Count > 0)
+            var others = players.Where(pi => pi.Key != whoisAsking.Key).ToArray();
+
+            if (others.Length > 0 || monsters.Count > 0)
             {
                 sb.AppendLine("Beware! These guys are in the room with you:");
-                if (players.Count > 1)
-                    foreach (var player in players)
+                if (others.Length > 0)
+                    foreach (var player in others)
                     {
                         sb.Append("  ").AppendLine(player.Name);
                     }

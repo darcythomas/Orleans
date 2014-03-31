@@ -14,6 +14,7 @@
 //
 //*********************************************************
 
+using System;
 using Orleans;
 
 namespace AdventureGrainInterfaces
@@ -21,7 +22,7 @@ namespace AdventureGrainInterfaces
     [Immutable]
     public class PlayerInfo
     {
-        public string Key { get; set; }
+        public Guid Key { get; set; }
         public string Name { get; set; }
     }
 }

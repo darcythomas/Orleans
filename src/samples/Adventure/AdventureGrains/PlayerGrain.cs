@@ -26,13 +26,14 @@ namespace AdventureGrains
 {
     public class PlayerGrain : Orleans.GrainBase, IPlayerGrain
     {
-        string name = "nobody";
         IRoomGrain roomGrain; // Current room
         List<Thing> things = new List<Thing>(); // Things that the player is carrying
 
+        PlayerInfo myInfo;
+
         Task<string> IPlayerGrain.Name()
         {
-            return Task.FromResult(name);
+            return Task.FromResult(myInfo.Name);
         }
 
         Task<IRoomGrain> IPlayerGrain.RoomGrain()
@@ -51,20 +52,18 @@ namespace AdventureGrains
             }
             await Task.WhenAll(tasks);
 
-            // TODO 
-            string myKeyExt;
-            this.GetPrimaryKey(out myKeyExt);
-            var myInfo = new PlayerInfo { Key = myKeyExt, Name = this.name };
-
             // Exit the game
-            await this.roomGrain.Exit(myInfo);
-
-            base.DeactivateOnIdle();
+            if ( this.roomGrain != null)
+                await this.roomGrain.Exit(myInfo);
         }
 
         async Task<string> Drop(Thing thing)
         {
-            if (thing != null) 
+            var checkMsg = await CheckAlive();
+            if (checkMsg != null)
+                return checkMsg;
+
+            if (thing != null)
             {
                 this.things.Remove(thing);
                 await this.roomGrain.Drop(thing);
@@ -76,7 +75,11 @@ namespace AdventureGrains
 
         async Task<string> Take(Thing thing)
         {
-            if (thing != null) 
+            var checkMsg = await CheckAlive();
+            if (checkMsg != null)
+                return checkMsg;
+
+            if (thing != null)
             {
                 this.things.Add(thing);
                 await this.roomGrain.Take(thing);
@@ -89,26 +92,19 @@ namespace AdventureGrains
 
         Task IPlayerGrain.SetName(string name)
         {
-            this.name = name;
+            this.myInfo = new PlayerInfo { Key = this.GetPrimaryKey(), Name = name };
             return TaskDone.Done;
         }
 
         Task IPlayerGrain.SetRoomGrain(IRoomGrain room)
         {
             this.roomGrain = room;
-            // TODO 
-            string myKeyExt;
-            this.GetPrimaryKey(out myKeyExt);
-            return room.Enter(new PlayerInfo { Key = myKeyExt, Name = this.name });
+            return room.Enter(myInfo);
         }
 
         async Task<string> Go(string direction)
         {
             IRoomGrain destination = await this.roomGrain.ExitTo(direction);
-
-            string myKeyExt;
-            this.GetPrimaryKey(out myKeyExt);
-            var myInfo = new PlayerInfo { Key = myKeyExt, Name = this.name };
 
             StringBuilder description = new StringBuilder();
 
@@ -118,7 +114,7 @@ namespace AdventureGrains
                 await destination.Enter(myInfo);
 
                 this.roomGrain = destination;
-                var desc = await destination.Description();
+                var desc = await destination.Description(myInfo);
 
                 if (desc != null)
                     description.Append(desc);
@@ -138,6 +134,48 @@ namespace AdventureGrains
             }
 
             return description.ToString();
+        }
+
+        async Task<string> CheckAlive()
+        {
+            if (roomGrain != null)
+                return null;
+
+            // Go to room '-2', which is the place of no return.
+            var room = RoomGrainFactory.GetGrain(-2);
+            await room.Enter(myInfo);
+            return await room.Description(myInfo);
+        }
+
+        async Task<string> Kill(string target)
+        {
+            if (things.Count == 0)
+                return "With what? Your bare hands?";
+
+            var player = await this.roomGrain.FindPlayer(target);
+            if (player != null)
+            {
+                var weapon = things.Where(t => t.Category == "weapon").FirstOrDefault();
+                if (weapon != null)
+                {
+                    await PlayerGrainFactory.GetGrain(player.Key).Die();
+                    return target + " is now dead.";
+                }
+                return "With what? Your bare hands?";
+            }
+
+            var monster = await this.roomGrain.FindMonster(target);
+            if (monster != null)
+            {
+                var weapons = monster.KilledBy.Join(things, id => id, t => t.Id, (id, t) => t);
+                if (weapons.Count() > 0)
+                {
+                    await MonsterGrainFactory.GetGrain(monster.Id).Kill(this.roomGrain);
+                    return target + " is now dead.";
+                }
+                return "With what? Your bare hands?";
+            }
+            return "I can't see " + target + " here. Are you sure?";
         }
 
         private string RemoveStopWords(string s)
@@ -175,14 +213,20 @@ namespace AdventureGrains
 
             string[] words = command.Split(' ');
 
-            string verb = words[0];
+            string verb = words[0].ToLower();
+
+            var checkMsg = await CheckAlive();
+            if (checkMsg != null && verb != "end")
+                return checkMsg;
 
             switch (verb)
             {
                 case "look":
-                    return await this.roomGrain.Description();
+                    return await this.roomGrain.Description(myInfo);
 
                 case "go":
+                    if (words.Length == 1)
+                        return "Go where?";
                     return await Go(words[1]);
 
                 case "north":
@@ -190,6 +234,12 @@ namespace AdventureGrains
                 case "east":
                 case "west":
                     return await Go(verb);
+
+                case "kill":
+                    if (words.Length == 1)
+                        return "Kill what?";
+                    var target = command.Substring(verb.Length + 1);
+                    return await Kill(target);
 
                 case "drop":
                     thing = FindMyThing(Rest(words));
@@ -200,8 +250,8 @@ namespace AdventureGrains
                     return await Take(thing);
 
                 case "inv":
-                case "inventory": 
-                    return "You are carrying: " + string.Join(" ", things.Select( x => x.Name));
+                case "inventory":
+                    return "You are carrying: " + string.Join(" ", things.Select(x => x.Name));
 
                 case "end":
                     return "";

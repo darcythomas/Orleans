@@ -14,8 +14,10 @@
 //
 //*********************************************************
 
-using Orleans;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using Orleans;
 
 namespace AdventureGrainInterfaces
 {
@@ -26,7 +28,7 @@ namespace AdventureGrainInterfaces
     public interface IRoomGrain : Orleans.IGrain
     {
         // Rooms have a textual description
-        Task<string> Description();
+        Task<string> Description(PlayerInfo whoisAsking);
         Task SetInfo(RoomInfo info);
 
         Task<IRoomGrain> ExitTo(string direction);
@@ -43,6 +45,10 @@ namespace AdventureGrainInterfaces
         Task Drop(Thing thing);
         Task Take(Thing thing);
         Task<Thing> FindThing(string name);
+
+        // Players and monsters can be killed, if you have the right weapon.
+        Task<PlayerInfo> FindPlayer(string name);
+        Task<MonsterInfo> FindMonster(string name);
     }
 
 

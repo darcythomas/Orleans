@@ -33,13 +33,13 @@ namespace AdventureGrains
         {
             this.monsterInfo.Id = this.GetPrimaryKeyLong();
 
-            RegisterTimer((_) => Move(), null, TimeSpan.FromSeconds(15), TimeSpan.FromMinutes(15));
+            RegisterTimer((_) => Move(), null, TimeSpan.FromSeconds(150), TimeSpan.FromMinutes(150));
             return base.ActivateAsync();
         }
 
-        Task IMonsterGrain.SetName(string name)
+        Task IMonsterGrain.SetInfo(MonsterInfo info)
         {
-            this.monsterInfo.Name = name;
+            this.monsterInfo = info;
             return TaskDone.Done;
         }
 
@@ -75,6 +75,20 @@ namespace AdventureGrains
             await nextRoom.Enter(this.monsterInfo);
 
             this.roomGrain = nextRoom;
+        }
+
+
+        Task<string> IMonsterGrain.Kill(IRoomGrain room)
+        {
+            if (this.roomGrain != null)
+            {
+                if (this.roomGrain.GetPrimaryKey() != room.GetPrimaryKey())
+                {
+                    return Task.FromResult(monsterInfo.Name + " snuck away. You were too slow!");
+                }
+                return this.roomGrain.Exit(this.monsterInfo).ContinueWith(t => monsterInfo.Name + " is dead.");
+            }
+            return Task.FromResult(monsterInfo.Name + " is already dead. You were too slow and someone else got to him!");
         }
     }
 }

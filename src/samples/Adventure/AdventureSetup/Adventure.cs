@@ -44,7 +44,7 @@ namespace AdventureSetup
         private Task MakeMonster(MonsterInfo data, IRoomGrain room)
         {
             var monsterGrain = MonsterGrainFactory.GetGrain(data.Id);
-            monsterGrain.SetName(data.Name);
+            monsterGrain.SetInfo(data);
             monsterGrain.SetRoomGrain(room);
             return Task.FromResult(true);
         }
