@@ -66,7 +66,7 @@ namespace Orleans.Samples.Chirper2012.Client
                     viewer = await ChirperViewerFactory.CreateObjectReference(this);
                     if (!this.IsPublisher) Console.WriteLine("Listening for new chirps...");
                     await account.ViewerConnect(viewer);
-                    // Ctrl-C to exit
+                    // Sleeps forwever, so Ctrl-C to exit
                     Thread.Sleep(-1);
                 }
             }

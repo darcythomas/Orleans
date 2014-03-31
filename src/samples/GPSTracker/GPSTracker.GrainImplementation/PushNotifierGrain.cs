@@ -26,9 +26,6 @@ using System.Threading.Tasks;
 
 namespace GPSTracker.GrainImplementation
 {
-    /// <summary>
-    /// Orleans grain implementation class.
-    /// </summary>
     [Reentrant]
     public class PushNotifierGrain : Orleans.GrainBase, IPushNotifierGrain
     {
@@ -144,7 +141,6 @@ namespace GPSTracker.GrainImplementation
                     {
                         hub.Item1.Start();
                     }
-                    //promises.Add(hub.Invoke("LocationUpdates", new MessageBatch { Messages = messagesToSend }));
                 }
                 catch (Exception ex)
                 {

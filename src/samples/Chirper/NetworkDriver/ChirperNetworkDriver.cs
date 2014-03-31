@@ -72,7 +72,6 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
 
             pipeline = new AsyncPipeline(PipelineLength);
             loader = new ChirperNetworkLoader(pipeline);
-            //if (this.Verbose) loader.SetVerbose();
 
             Console.WriteLine("Loading Chirper network data file " + this.GraphDataFile.FullName);
             loader.FileToLoad = this.GraphDataFile;
@@ -243,7 +242,6 @@ namespace Orleans.Samples.Chirper2012.Network.Driver
 
         public void Dispose()
         {
-            //loader.Dispose();
         }
 
         #endregion

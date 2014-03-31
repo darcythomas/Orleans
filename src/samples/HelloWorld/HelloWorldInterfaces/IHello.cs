@@ -23,7 +23,7 @@ using Orleans;
 namespace HelloWorldInterfaces
 {
     /// <summary>
-    /// Orleans grain communication interface IGrain1
+    /// Orleans grain communication interface IHello
     /// </summary>
     public interface IHello : Orleans.IGrain
     {

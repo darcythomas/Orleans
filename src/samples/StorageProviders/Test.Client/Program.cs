@@ -25,7 +25,7 @@ namespace Test.Client
     {
         static void Main(string[] args)
         {
-            // The Orleans silo environment is initialized in its own app domain in order to more
+            // The Orleans environment is initialized in its own app domain in order to more
             // closely emulate the distributed situation, when the client and the server cannot
             // pass data via shared memory.
             AppDomain hostDomain = AppDomain.CreateDomain("OrleansHost", null, new AppDomainSetup

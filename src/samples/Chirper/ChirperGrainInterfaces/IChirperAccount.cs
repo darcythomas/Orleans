@@ -43,11 +43,6 @@ namespace Orleans.Samples.Chirper2012.GrainInterfaces
         /// <returns>Task status for this operation</returns>
         Task FollowUserId(long userIdToFollow);
 
-        ///// <summary>Remove a follower subscription from this user to the specified publisher</summary>
-        ///// <param name="userAliasToUnfollow">The alias of the publisher no longer being followed by this user</param>
-        ///// <returns>Task status for this operation</returns>
-        //Task UnfollowUserAlias(string userAliasToUnfollow);
-
         /// <summary>Remove a follower subscription from this user to the specified publisher</summary>
         /// <param name="userIdToUnfollow">The id of the publisher no longer being followed by this user</param>
         /// <returns>AsyncCompletion status for this operation</returns>

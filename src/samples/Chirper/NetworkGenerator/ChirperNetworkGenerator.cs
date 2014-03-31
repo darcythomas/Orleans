@@ -256,13 +256,6 @@ namespace Orleans.Samples.Chirper2012.Network.Generator
                 }
             }
 
-            // Using Linq to XML here to insert the statistic comment won't adversely affect performance.
-            //XComment statisticsComment = new XComment(summaryMessageStringBuilder.ToString());
-            //XDocument generatedGraphMLDoc = XDocument.Load(graphMLFile);
-            //XElement graphElement = generatedGraphMLDoc.Root;
-            //graphElement.AddFirst(statisticsComment);
-            //graphElement.Document.Save(this.graphMLFile);
-
             return 0;
         }
 

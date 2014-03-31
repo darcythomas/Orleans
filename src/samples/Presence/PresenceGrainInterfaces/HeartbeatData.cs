@@ -71,7 +71,7 @@ namespace Orleans.Samples.Presence.GrainInterfaces
 
 
     /// <summary>
-    /// This class encapsulates .NET serialization/deserialization of HeartbeatData.
+    /// This class encapsulates serialization/deserialization of HeartbeatData.
     /// It is used only to simulate the real life scenario where data comes in from devices in the binary.
     /// If an instance of HeartbeatData is passed as an argument to a grain call, no such serializer is necessary
     /// because Orleans auto-generates efficient serializers for all argument types.

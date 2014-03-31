@@ -54,7 +54,6 @@ namespace Orleans.Samples.Chirper2012.Network.Generator
             {
                 prog.LogMessage(string.Format("{0} halting due to error - {1}", thisProg.Name, exc));
                 prog.FlushLog();
-               // Console.WriteLine(string.Format("{0} halting due to error - {1}", thisProg.Name, exc.ToString()));
                 exitCode = 1;
             }
 

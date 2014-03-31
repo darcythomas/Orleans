@@ -23,9 +23,6 @@ using Test.Interfaces;
 
 namespace Test.Implementation
 {
-    /// <summary>
-    /// Orleans grain implementation class Person
-    /// </summary>
     [StorageProvider(ProviderName = "TestStore")]
     public class Person : GrainBase<IPersonState>, Test.Interfaces.IPerson
     {

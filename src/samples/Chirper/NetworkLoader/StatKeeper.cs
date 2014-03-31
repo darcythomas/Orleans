@@ -69,7 +69,6 @@ namespace Orleans.Samples.Chirper2012.Network.Loader
         {
             TimeSpan time = this.stopwatch.Elapsed;
             long memory = this.memoryMonitor.NextSample().RawValue;
-            //long processor = this.processorMonitor.NextSample().RawValue;
             float processor = this.processorMonitor.NextValue();
 
             Tuple<TimeSpan, long, float> mark = new Tuple<TimeSpan, long, float>(time, memory, processor);
