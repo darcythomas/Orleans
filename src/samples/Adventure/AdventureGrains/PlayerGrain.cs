@@ -29,7 +29,15 @@ namespace AdventureGrains
         IRoomGrain roomGrain; // Current room
         List<Thing> things = new List<Thing>(); // Things that the player is carrying
 
+        bool killed = false;
+
         PlayerInfo myInfo;
+
+        public override Task ActivateAsync()
+        {
+            this.myInfo = new PlayerInfo { Key = this.GetPrimaryKey(), Name = "nobody" };
+            return base.ActivateAsync();
+        }
 
         Task<string> IPlayerGrain.Name()
         {
@@ -53,15 +61,18 @@ namespace AdventureGrains
             await Task.WhenAll(tasks);
 
             // Exit the game
-            if ( this.roomGrain != null)
+            if (this.roomGrain != null)
+            {
                 await this.roomGrain.Exit(myInfo);
+                this.roomGrain = null;
+                killed = true;
+            }
         }
 
         async Task<string> Drop(Thing thing)
         {
-            var checkMsg = await CheckAlive();
-            if (checkMsg != null)
-                return checkMsg;
+            if ( killed )
+                return await CheckAlive();
 
             if (thing != null)
             {
@@ -75,9 +86,8 @@ namespace AdventureGrains
 
         async Task<string> Take(Thing thing)
         {
-            var checkMsg = await CheckAlive();
-            if (checkMsg != null)
-                return checkMsg;
+            if (killed)
+                return await CheckAlive();
 
             if (thing != null)
             {
@@ -92,7 +102,7 @@ namespace AdventureGrains
 
         Task IPlayerGrain.SetName(string name)
         {
-            this.myInfo = new PlayerInfo { Key = this.GetPrimaryKey(), Name = name };
+            this.myInfo.Name = name;
             return TaskDone.Done;
         }
 
@@ -138,12 +148,11 @@ namespace AdventureGrains
 
         async Task<string> CheckAlive()
         {
-            if (roomGrain != null)
+            if (!killed)
                 return null;
 
             // Go to room '-2', which is the place of no return.
             var room = RoomGrainFactory.GetGrain(-2);
-            await room.Enter(myInfo);
             return await room.Description(myInfo);
         }
 
@@ -215,9 +224,8 @@ namespace AdventureGrains
 
             string verb = words[0].ToLower();
 
-            var checkMsg = await CheckAlive();
-            if (checkMsg != null && verb != "end")
-                return checkMsg;
+            if (killed && verb != "end")
+                return await CheckAlive();
 
             switch (verb)
             {
