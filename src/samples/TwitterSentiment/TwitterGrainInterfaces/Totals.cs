@@ -18,6 +18,9 @@ using System;
 
 namespace TwitterGrainInterfaces
 {
+    /// <summary>
+    /// A DTO to return sentiment score for a hashtag 
+    /// </summary>
     public class Totals
     {
         public int Positive { get; set; }

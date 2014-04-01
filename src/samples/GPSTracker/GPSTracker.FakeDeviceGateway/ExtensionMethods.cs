@@ -15,8 +15,6 @@
 //*********************************************************
 
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace GPSTracker.FakeDeviceGateway
 {
@@ -28,37 +26,9 @@ namespace GPSTracker.FakeDeviceGateway
             return (rand.NextDouble() * (max - min)) + min;
         }
 
-
         public static double Cap(this double value, double min, double max)
         {
             return Math.Min(max, Math.Max(min, value));
-        }
-
-        public static int Cap(this int value, int min, int max)
-        {
-            return Math.Min(max, Math.Max(min, value));
-        }
-
-        public static float Cap(this float value, float min, float max)
-        {
-            return Math.Min(max, Math.Max(min, value));
-        }
-
-        public static string Log(this string value)
-        {
-            Console.WriteLine(value);
-            return value;
-        }
-
-        public static Exception Log(this Exception value)
-        {
-            Console.WriteLine(value.ToString());
-            return value;
-        }
-
-        public static async Task WhenAll(this IEnumerable<Task> tasks)
-        {
-            await Task.WhenAll(tasks);
         }
 
     }

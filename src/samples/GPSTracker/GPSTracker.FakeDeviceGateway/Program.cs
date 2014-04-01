@@ -39,6 +39,7 @@ namespace GPSTracker.FakeDeviceGateway
         {
             OrleansClient.Initialize("LocalConfiguration.xml");
 
+            // simulate 20 devices
             var devices = new List<Model>();
             for (var i = 0; i < 20; i++)
             {
@@ -52,7 +53,6 @@ namespace GPSTracker.FakeDeviceGateway
                 });
             }
 
-
             var timer = new System.Timers.Timer();
             timer.Interval = 1000;
             timer.Elapsed += (s, e) =>
@@ -62,8 +62,7 @@ namespace GPSTracker.FakeDeviceGateway
             };
             timer.Start();
 
-            var tasks = new List<Task>();
-
+            // create a thread for each device, and continually move it's position
             foreach (var model in devices)
             {
                 var ts = new ThreadStart(() =>
@@ -73,50 +72,49 @@ namespace GPSTracker.FakeDeviceGateway
                         try
                         {
                             SendMessage(model).Wait();
-                            Thread.Sleep(rand.Next(500,2500));
+                            Thread.Sleep(rand.Next(500, 2500));
                         }
                         catch (Exception ex)
                         {
-                            ex.ToString().Log();
+                            Console.WriteLine(ex.ToString());
                         }
 
                     }
                 });
                 new Thread(ts).Start();
             }
-            tasks.WhenAll().Wait();
-            Thread.Sleep(20);
-
         }
 
         private static async Task SendMessage(Model model)
         {
+            // simulate the device moving
             model.Speed += rand.NextDouble(-0.0001, 0.0001);
             model.Direction += rand.NextDouble(-0.001, 0.001);
 
             var lastLat = model.Lat;
             var lastLon = model.Lon;
 
+            UpdateDevicePosition(model);
+
+            if (lastLat == model.Lat || lastLon == model.Lon)
+            {
+                // the device has hit the boundary, so reverse it's direction
+                model.Speed = -model.Speed;
+                UpdateDevicePosition(model);
+            }
+
+            // send the mesage to Orleans
+            var device = DeviceGrainFactory.GetGrain(model.DeviceId);
+            await device.ProcessMessage(new DeviceMessage(model.Lat, model.Lon, counter, model.DeviceId, DateTime.UtcNow));
+            Interlocked.Increment(ref counter);
+        }
+
+        private static void UpdateDevicePosition(Model model)
+        {
             model.Lat += Math.Cos(model.Direction) * model.Speed;
             model.Lon += Math.Sin(model.Direction) * model.Speed;
             model.Lat = model.Lat.Cap(SFLatMin, SFLatMax);
             model.Lon = model.Lon.Cap(SFLonMin, SFLonMax);
-
-            if (lastLat == model.Lat || lastLon == model.Lon)
-            {
-                model.Speed = -model.Speed;
-                model.Lat += Math.Cos(model.Direction) * model.Speed;
-                model.Lon += Math.Sin(model.Direction) * model.Speed;
-                model.Lat = model.Lat.Cap(SFLatMin, SFLatMax);
-                model.Lon = model.Lon.Cap(SFLonMin, SFLonMax);
-            }
-
-            lastLat = model.Lat;
-            lastLon = model.Lon;
-
-            var device = DeviceGrainFactory.GetGrain(model.DeviceId);
-            Interlocked.Increment(ref counter);
-            await device.ProcessMessage(new DeviceMessage(model.Lat, model.Lon, counter, model.DeviceId, DateTime.UtcNow));
         }
 
         class Model

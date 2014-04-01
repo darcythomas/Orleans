@@ -29,29 +29,24 @@ namespace GPSTracker.GrainImplementation
     [Reentrant]
     public class PushNotifierGrain : Orleans.GrainBase, IPushNotifierGrain
     {
-        Dictionary<string, Tuple<HubConnection, IHubProxy>> hubs;
-        List<VelocityMessage> messageQueue;
+        Dictionary<string, Tuple<HubConnection, IHubProxy>> hubs = new Dictionary<string, Tuple<HubConnection, IHubProxy>>();
+        List<VelocityMessage> messageQueue = new List<VelocityMessage>();
 
         public override async Task ActivateAsync()
         {
-            messageQueue = new List<VelocityMessage>();
-
-            var key = this.GetPrimaryKeyLong();
-            Console.WriteLine("activating push notification grain {0}", key);
-
-            hubs = new Dictionary<string, Tuple<HubConnection, IHubProxy>>();
-
+            // set up a timer to regularly flush the message queue
             this.RegisterTimer(FlushQueue, null, TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(100));
 
             if (RoleEnvironment.IsAvailable)
             {
                 // in azure
                 await RefreshHubs(null);
+                // set up a timer to regularly refresh the hubs, to respond to azure infrastructure changes
                 this.RegisterTimer(RefreshHubs, null, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
             }
             else
             {
-                // not in azure
+                // not in azure, the SignalR hub is running locally
                 await AddHub("http://localhost:48777/");
             }
 
@@ -60,7 +55,6 @@ namespace GPSTracker.GrainImplementation
 
         private async Task RefreshHubs(object _)
         {
-            Console.WriteLine("Refreshing Hubs");
             var addresses = new List<string>();
             var tasks = new List<Task>();
 
@@ -84,25 +78,19 @@ namespace GPSTracker.GrainImplementation
             {
                 tasks.Add(AddHub(hub));
             }
+
             await Task.WhenAll(tasks);
-
-            Console.WriteLine("There are now {0} hubs", hubs.Count);
         }
-
-        public bool Flushed = false;
 
         private Task FlushQueue(object _)
         {
-            if (!this.Flushed)
-            {
-                this.Flush();
-            }
-            this.Flushed = false;
+            this.Flush();
             return TaskDone.Done;
         }
 
         private async Task AddHub(string address)
         {
+            // create a connection to a hub
             var hubConnection = new HubConnection(address);
             hubConnection.Headers.Add("ORLEANS", "GRAIN");
             var hub = hubConnection.CreateHubProxy("LocationHub");
@@ -112,11 +100,12 @@ namespace GPSTracker.GrainImplementation
 
         public Task SendMessage(VelocityMessage message)
         {
+            // add a message to the send queue
             messageQueue.Add(message);
             if (messageQueue.Count < 25)
             {
+                // if the queue size is greater than 25, flush the queue
                 Flush();
-                this.Flushed = true;
             }
             return TaskDone.Done;
         }
@@ -125,6 +114,7 @@ namespace GPSTracker.GrainImplementation
         {
             if (messageQueue.Count == 0) return;
 
+            // send all messages to all SignalR hubs
             var messagesToSend = messageQueue.ToArray();
             messageQueue.Clear();
 

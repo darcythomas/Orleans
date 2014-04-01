@@ -19,6 +19,10 @@ using System.Threading.Tasks;
 
 namespace TwitterGrainInterfaces
 {
+
+    /// <summary>
+    /// A grain to maintain a sentiment score against a hashtag
+    /// </summary>
     [ExtendedPrimaryKey]
     public interface IHashtagGrain : Orleans.IGrain
     {

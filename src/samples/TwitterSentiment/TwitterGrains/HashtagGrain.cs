@@ -14,14 +14,16 @@
 //
 //*********************************************************
 
-using TwitterGrainInterfaces;
 using Orleans;
 using System;
 using System.Threading.Tasks;
+using TwitterGrainInterfaces;
 
 namespace TwitterGrains
 {
-    // state persistence interface 
+    /// <summary>
+    /// interface defining the persistent state for hashtag grain
+    /// </summary>
     public interface ITotalsState : IGrainState
     {
         int Positive { get; set; }
@@ -45,11 +47,12 @@ namespace TwitterGrains
             this.GetPrimaryKey(out hashtag);
             this.State.Hashtag = hashtag;
 
-            // if this is our first ever activation, let the hashcount know
+            // if this is our first ever activation, let the Counter Grain know
             if (!this.State.BeenCounted)
             {
-                this.State.BeenCounted = true;  // now its been counted 
-                var counter = CounterFactory.GetGrain(0);  // the counter is a stateless worker grain
+                // record that the grain has now been counted, and store the state
+                this.State.BeenCounted = true;
+                var counter = CounterFactory.GetGrain(0);
                 await Task.WhenAll(counter.IncrementCounter(), this.State.WriteStateAsync());
             }
             await base.ActivateAsync();
@@ -59,11 +62,9 @@ namespace TwitterGrains
         {
             this.State.LastUpdated = DateTime.UtcNow;
             this.State.LastTweet = lastTweet;
-
             this.State.Total += 1;
 
-            // track sentiment
-
+            // update sentiment score
             if (score > 0)
             {
                 this.State.Positive += 1;
@@ -76,6 +77,7 @@ namespace TwitterGrains
 
             if (score != 0)
             {
+                // only save the state if the score is non-zero (otherwise it's not interesting)
                 await this.State.WriteStateAsync();
             }
         }

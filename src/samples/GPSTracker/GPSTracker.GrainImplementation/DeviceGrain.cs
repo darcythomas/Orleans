@@ -30,37 +30,31 @@ namespace GPSTracker.GrainImplementation
     {
         public DeviceMessage LastMessage { get; set; }
 
-        long key;
-
-        const int NotificationPoolSize = 5;
-
-        public override Task ActivateAsync()
-        {
-            key = this.GetPrimaryKeyLong();
-            return base.ActivateAsync();
-        }
-
         public async Task ProcessMessage(DeviceMessage message)
         {
             if (null == this.LastMessage || this.LastMessage.Latitude != message.Latitude || this.LastMessage.Longitude != message.Longitude)
             {
-                // only push notifications if necessary
+                // only sent a notification if the position has changed
                 var notifier = PushNotifierGrainFactory.GetGrain(0);
                 var speed = GetSpeed(this.LastMessage, message);
 
+                // record the last message
                 this.LastMessage = message;
 
+                // forward the message to the notifier grain
                 var velocityMessage = new VelocityMessage(message, speed);
                 await notifier.SendMessage(velocityMessage);
             }
             else
             {
+                // the position has not changed, just record the last message
                 this.LastMessage = message;
             }
         }
 
         static double GetSpeed(DeviceMessage message1, DeviceMessage message2)
         {
+            // calculate the speed of the device, using the interal state of the grain
             if (message1 == null) return 0;
             if (message2 == null) return 0;
 

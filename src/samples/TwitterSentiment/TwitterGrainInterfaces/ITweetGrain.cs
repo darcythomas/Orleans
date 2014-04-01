@@ -15,11 +15,14 @@
 //*********************************************************
 
 using Orleans;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace TwitterGrainInterfaces
 {
+
+    /// <summary>
+    /// A grain to act as the API into Orleans, and fan out read/writes to multiple hashtag grains
+    /// </summary>
     [StatelessWorker]
     public interface ITweetDispatcherGrain : Orleans.IGrain
     {

@@ -14,16 +14,22 @@
 //
 //*********************************************************
 
-using TwitterGrainInterfaces;
 using Orleans;
 using System.Threading.Tasks;
+using TwitterGrainInterfaces;
 
 
 namespace TwitterGrains
 {
 
+    /// <summary>
+    /// interface defining the persistent state for the counter grain
+    /// </summary>
     public interface ICounterState : IGrainState
     {
+        /// <summary>
+        /// total number of hashtag grain activations
+        /// </summary>
         int Counter { get; set; }
     }
 
@@ -31,18 +37,32 @@ namespace TwitterGrains
     [Reentrant]
     public class CounterGrain : Orleans.GrainBase<ICounterState>, ICounter
     {
+        /// <summary>
+        /// Add one to the activation count
+        /// </summary>
+        /// <returns></returns>
         public async Task IncrementCounter()
         {
             this.State.Counter += 1;
+
+            // as an optimisation, only write out the state for every 100 increments 
             if (this.State.Counter % 100 == 0) await State.WriteStateAsync();
         }
 
+        /// <summary>
+        /// Reset the counter to zero
+        /// </summary>
+        /// <returns></returns>
         public async Task ResetCounter()
         {
             this.State.Counter = 0;
             await this.State.WriteStateAsync();
         }
 
+        /// <summary>
+        /// Retrieve the total count
+        /// </summary>
+        /// <returns></returns>
         public Task<int> GetTotalCounter()
         {
             return Task.FromResult(this.State.Counter);

@@ -14,21 +14,29 @@
 //
 //*********************************************************
 
-using TwitterGrainInterfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TwitterGrainInterfaces;
 
 namespace Grains
 {
-    // Public dispatcher
+    /// <summary>
+    /// This grain acts as the API into the hashtag grain, and allows you to set the score of multiple hashtags at once
+    /// </summary>
     public class TweetDispatcherGrain : Orleans.GrainBase, ITweetDispatcherGrain
     {
-        // disptach each hashtag to the appropriate grain, using the hashtag as the grain key
+        /// <summary>
+        /// disptach each hashtag to the appropriate grain, using the hashtag as the grain key
+        /// </summary>
+        /// <param name="score"></param>
+        /// <param name="hashtags"></param>
+        /// <param name="tweet"></param>
+        /// <returns></returns>
         public async Task AddScore(int score, string[] hashtags, string tweet)
         {
+            // fan out to the grains for all hashtags to set their scores
             var tasks = new List<Task>();
-
             foreach (var hashtag in hashtags)
             {
                 var grain = HashtagGrainFactory.GetGrain(0, hashtag);
@@ -39,9 +47,14 @@ namespace Grains
         }
 
 
-        // retrieve the totals for a set of hashtags
+        /// <summary>
+        /// retrieve the totals for a set of hashtags
+        /// </summary>
+        /// <param name="hashtags"></param>
+        /// <returns></returns>
         public async Task<Totals[]> GetTotals(string[] hashtags)
         {
+            // fan out to the grains for all hashtags to retrieve their scores
             var tasks = new List<Task<Totals>>();
             foreach (var hashtag in hashtags)
             {

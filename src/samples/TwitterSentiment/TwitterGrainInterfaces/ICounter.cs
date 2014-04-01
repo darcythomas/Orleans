@@ -24,6 +24,9 @@ using Orleans;
 
 namespace TwitterGrainInterfaces
 {
+    /// <summary>
+    /// A grain to keep track of the total number of hashtag grain activations
+    /// </summary>
     public interface ICounter : Orleans.IGrain
     {
         Task IncrementCounter();
