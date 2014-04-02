@@ -12,10 +12,14 @@
     <AssemblyName>PresenceGrains</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName></SccProjectName>
-    <SccLocalPath></SccLocalPath>
-    <SccAuxPath></SccAuxPath>
-    <SccProvider></SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
@@ -58,7 +62,7 @@
   <ItemGroup>
     <Compile Include="GameGrain.cs" />
     <Compile Include="PlayerGrain.cs" />
-    <Compile Include="PresenseGrain.cs" />
+    <Compile Include="PresenceGrain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

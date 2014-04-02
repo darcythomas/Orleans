@@ -28,7 +28,7 @@ namespace PresenceGrains
     /// Stateless grain that decodes binary blobs and routes then to the appropriate game grains based on the blob content.
     /// Simulates how a cloud service receives raw data from a device and needs to preprocess it before forwarding for the actial computation.
     /// </summary>
-    public class PresenseGrain : GrainBase, IPresenceGrain
+    public class PresenceGrain : GrainBase, IPresenceGrain
     {
         public Task Heartbeat(byte[] data)
         {
